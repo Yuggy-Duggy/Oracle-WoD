@@ -1,0 +1,977 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title data-id="th-modified">World of Darkness — The Codex Noctis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&amp;family=Cinzel:wght@400;600;700&amp;family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&amp;display=swap" rel="stylesheet">
+<style>
+:root {
+  --blood:#8B0000;--crimson:#DC143C;--deep-crimson:#5c0011;
+  --void:#030303;--obsidian:#0a0a0f;--shadow:#111118;--dusk:#1a1a26;
+  --parchment:#c8ad7f;--aged:#a89060;--silver:#b0b0c0;--moonsilver:#d4d4e8;
+  --gold:#c9a84c;--amber:#ffb347;
+  --font-head:'Cinzel Decorative',serif;--font-sub:'Cinzel',serif;--font-body:'EB Garamond',serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--void);color:var(--parchment);font-family:var(--font-body);font-size:17px;line-height:1.75;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:9999;opacity:.4}
+::-webkit-scrollbar{width:8px}::-webkit-scrollbar-track{background:var(--obsidian)}::-webkit-scrollbar-thumb{background:var(--blood);border-radius:4px}
+
+/* LOADER */
+#loader{position:fixed;inset:0;background:var(--void);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:10000;transition:opacity 1s ease,visibility 1s ease}
+#loader.hidden{opacity:0;visibility:hidden}
+.loader-symbol{font-size:5rem;color:var(--blood);animation:pulseBlood 2s infinite;font-family:var(--font-head)}
+.loader-text{font-family:var(--font-sub);color:var(--parchment);font-size:1rem;letter-spacing:.4em;text-transform:uppercase;margin-top:1.5rem;opacity:0;animation:fadeUp 1s ease .8s forwards}
+.loader-bar{width:200px;height:2px;background:var(--shadow);margin-top:2rem;overflow:hidden}
+.loader-bar::after{content:'';display:block;width:100%;height:100%;background:var(--blood);animation:loadProg 2s ease forwards}
+@keyframes pulseBlood{0%,100%{text-shadow:0 0 20px var(--blood),0 0 40px var(--deep-crimson)}50%{text-shadow:0 0 40px var(--crimson),0 0 80px var(--blood)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes loadProg{from{transform:translateX(-100%)}to{transform:translateX(0)}}
+
+/* HERO */
+#hero{min-height:100vh;background:radial-gradient(ellipse at 50% 30%,#1a0005 0%,var(--void) 70%);display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;overflow:hidden;padding:2rem;text-align:center}
+.hero-rings{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none}
+.ring{position:absolute;border-radius:50%;border:1px solid rgba(139,0,0,.12);animation:ringPulse 8s linear infinite}
+.ring:nth-child(1){width:300px;height:300px}.ring:nth-child(2){width:500px;height:500px;animation-delay:-2s;border-color:rgba(139,0,0,.08)}.ring:nth-child(3){width:700px;height:700px;animation-delay:-4s;border-color:rgba(139,0,0,.05)}.ring:nth-child(4){width:900px;height:900px;animation-delay:-6s;border-color:rgba(139,0,0,.03)}.ring:nth-child(5){width:1200px;height:1200px;border-color:rgba(139,0,0,.02)}
+@keyframes ringPulse{0%{transform:scale(.95);opacity:0}50%{opacity:1}100%{transform:scale(1.05);opacity:0}}
+.hero-sigil{font-size:clamp(4rem,10vw,8rem);color:var(--blood);font-family:var(--font-head);text-shadow:0 0 60px rgba(139,0,0,.6);animation:fadeUp 1.2s ease .2s both;position:relative;z-index:2;line-height:1}
+.hero-sigil::before{content:'☽ ✦ ☾';display:block;font-size:1.5rem;color:var(--aged);letter-spacing:1em;margin-bottom:.5rem;font-family:serif;text-shadow:none}
+.hero-title{font-family:var(--font-head);font-size:clamp(2.5rem,6vw,5rem);font-weight:900;color:var(--parchment);line-height:1.1;animation:fadeUp 1.2s ease .5s both;position:relative;z-index:2;margin-top:1rem;text-shadow:0 2px 20px rgba(0,0,0,.8)}
+.hero-title span{color:var(--blood)}
+.hero-sub{font-family:var(--font-sub);font-size:clamp(.75rem,1.5vw,1rem);color:var(--aged);letter-spacing:.5em;text-transform:uppercase;margin-top:1rem;animation:fadeUp 1.2s ease .7s both;position:relative;z-index:2}
+.hero-divider{width:200px;height:1px;background:linear-gradient(90deg,transparent,var(--blood),transparent);margin:2rem auto;animation:fadeUp 1.2s ease .9s both;position:relative;z-index:2}
+.hero-tagline{font-style:italic;font-size:clamp(1rem,2vw,1.25rem);color:var(--silver);max-width:600px;animation:fadeUp 1.2s ease 1s both;position:relative;z-index:2}
+.hero-pills{display:flex;flex-wrap:wrap;gap:.75rem;justify-content:center;margin-top:3rem;animation:fadeUp 1.2s ease 1.2s both;position:relative;z-index:2}
+.hero-pill{padding:.6rem 1.5rem;border:1px solid rgba(139,0,0,.5);background:rgba(139,0,0,.08);color:var(--parchment);font-family:var(--font-sub);font-size:.8rem;letter-spacing:.15em;text-transform:uppercase;cursor:pointer;transition:all .3s ease;text-decoration:none;display:inline-block}
+.hero-pill:hover{background:rgba(139,0,0,.3);border-color:var(--crimson);color:#fff;box-shadow:0 0 20px rgba(139,0,0,.3)}
+.scroll-ind{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:.5rem;animation:fadeUp 2s ease 2s both;cursor:pointer;z-index:2}
+.scroll-ind span{font-family:var(--font-sub);font-size:.65rem;letter-spacing:.3em;text-transform:uppercase;color:rgba(200,173,127,.4)}
+.scroll-line{width:1px;height:40px;background:linear-gradient(to bottom,var(--blood),transparent);animation:scrollPulse 2s ease infinite}
+@keyframes scrollPulse{0%,100%{transform:scaleY(.5);opacity:.3}50%{transform:scaleY(1);opacity:1}}
+
+/* NAV */
+#main-nav{position:sticky;top:0;z-index:500;background:rgba(3,3,3,.95);backdrop-filter:blur(10px);border-bottom:1px solid rgba(139,0,0,.3);padding:0 2rem}
+.nav-inner{max-width:1400px;margin:0 auto;display:flex;align-items:center;gap:.25rem;overflow-x:auto;scrollbar-width:none}
+.nav-inner::-webkit-scrollbar{display:none}
+.nav-logo{font-family:var(--font-head);font-size:1rem;color:var(--blood);white-space:nowrap;padding:1rem 1rem 1rem 0;margin-right:1rem;border-right:1px solid rgba(139,0,0,.3);text-shadow:0 0 10px rgba(139,0,0,.5)}
+.nav-btn{padding:1rem 1.2rem;background:none;border:none;color:var(--aged);font-family:var(--font-sub);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;transition:all .2s ease;white-space:nowrap;position:relative}
+.nav-btn::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--blood);transform:scaleX(0);transition:transform .2s ease}
+.nav-btn:hover{color:var(--parchment)}.nav-btn.active{color:var(--crimson)}
+.nav-btn:hover::after,.nav-btn.active::after{transform:scaleX(1)}
+
+/* SECTIONS */
+.section{display:none;min-height:100vh;padding:4rem 2rem}
+.section.active{display:block}
+.section-inner{max-width:1300px;margin:0 auto}
+.section-header{text-align:center;margin-bottom:4rem;position:relative}
+.section-header::after{content:'';display:block;width:100px;height:1px;background:linear-gradient(90deg,transparent,var(--blood),transparent);margin:1.5rem auto 0}
+.section-eyebrow{font-family:var(--font-sub);font-size:.7rem;letter-spacing:.5em;text-transform:uppercase;color:var(--blood);margin-bottom:.75rem}
+.section-title{font-family:var(--font-head);font-size:clamp(2rem,4vw,3.5rem);color:var(--parchment);line-height:1.1}
+.section-title span{color:var(--blood)}
+.section-desc{font-style:italic;color:var(--silver);margin-top:1rem;font-size:1.1rem;max-width:700px;margin-left:auto;margin-right:auto}
+
+/* CARDS */
+.content-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1.5rem;margin-bottom:3rem}
+.lore-card{background:linear-gradient(135deg,rgba(20,20,30,.8) 0%,rgba(10,10,15,.9) 100%);border:1px solid rgba(139,0,0,.2);padding:2rem;position:relative;overflow:hidden;transition:all .3s ease;cursor:pointer}
+.lore-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--blood),transparent);transform:scaleX(0);transition:transform .3s ease}
+.lore-card:hover{border-color:rgba(139,0,0,.5);transform:translateY(-2px);box-shadow:0 10px 40px rgba(0,0,0,.5),0 0 20px rgba(139,0,0,.1)}
+.lore-card:hover::before{transform:scaleX(1)}
+.card-icon{font-size:2.5rem;margin-bottom:1rem;display:block;line-height:1}
+.card-title{font-family:var(--font-sub);font-size:1.1rem;color:var(--parchment);margin-bottom:.75rem;font-weight:700}
+.card-body{font-size:.9rem;color:var(--silver);line-height:1.7}
+.card-tag{display:inline-block;margin-top:1rem;padding:.2rem .75rem;border:1px solid rgba(139,0,0,.4);font-family:var(--font-sub);font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;color:var(--blood)}
+
+/* PANELS */
+.lore-panel{border:1px solid rgba(139,0,0,.2);margin-bottom:.75rem;overflow:hidden}
+.lore-panel-header{padding:1.25rem 1.5rem;display:flex;align-items:center;justify-content:space-between;cursor:pointer;background:rgba(10,10,15,.8);transition:all .2s ease}
+.lore-panel-header:hover{background:rgba(139,0,0,.08)}
+.lore-panel-header h3{font-family:var(--font-sub);font-size:1rem;color:var(--parchment);font-weight:600}
+.panel-icon{color:var(--blood);font-size:1.2rem;transition:transform .3s ease}
+.lore-panel.open .panel-icon{transform:rotate(180deg)}
+.lore-panel-body{max-height:0;overflow:hidden;transition:max-height .4s ease;background:rgba(5,5,10,.9)}
+.lore-panel.open .lore-panel-body{max-height:3000px}
+.lore-panel-content{padding:1.5rem 1.5rem 2rem;font-size:.92rem;line-height:1.8;color:var(--silver);border-top:1px solid rgba(139,0,0,.1)}
+.lore-panel-content p{margin-bottom:1rem}.lore-panel-content p:last-child{margin-bottom:0}
+.lore-panel-content h4{font-family:var(--font-sub);color:var(--parchment);font-size:.9rem;margin:1.5rem 0 .5rem;letter-spacing:.05em}
+.lore-panel-content ul{list-style:none;padding-left:1rem}
+.lore-panel-content ul li::before{content:'✦ ';color:var(--blood);font-size:.7rem}
+
+/* SUB TABS */
+.sub-tabs{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:3rem;border-bottom:1px solid rgba(139,0,0,.2);padding-bottom:0}
+.sub-tab{padding:.75rem 1.5rem;background:none;border:none;color:var(--aged);font-family:var(--font-sub);font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;transition:all .2s ease;border-bottom:2px solid transparent;margin-bottom:-1px}
+.sub-tab:hover{color:var(--parchment)}.sub-tab.active{color:var(--crimson);border-bottom-color:var(--crimson)}
+.sub-content{display:none}.sub-content.active{display:block}
+
+/* QUOTE */
+.wod-quote{border-left:3px solid var(--blood);padding:1.5rem 2rem;margin:2rem 0;background:rgba(139,0,0,.05);position:relative}
+.wod-quote::before{content:'"';position:absolute;top:-.5rem;left:1rem;font-size:4rem;color:var(--blood);opacity:.3;font-family:Georgia,serif;line-height:1}
+.wod-quote blockquote{font-style:italic;color:var(--moonsilver);font-size:1.05rem;line-height:1.8}
+.wod-quote cite{display:block;margin-top:.75rem;font-style:normal;font-family:var(--font-sub);font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--aged)}
+
+/* RULES GRID */
+.rules-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.25rem}
+.rules-card{background:rgba(10,10,15,.9);border:1px solid rgba(139,0,0,.15);padding:1.5rem}
+.rules-card h4{font-family:var(--font-sub);font-size:.85rem;color:var(--crimson);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.75rem;padding-bottom:.5rem;border-bottom:1px solid rgba(139,0,0,.2)}
+.rules-card p,.rules-card li{font-size:.88rem;color:var(--silver);line-height:1.7}
+.rules-card ul{padding-left:1.2rem}.rules-card ul li{margin-bottom:.3rem}
+
+/* GAMELINE BANDS */
+.gameline-band{padding:3rem 2rem;margin-bottom:3rem;position:relative;overflow:hidden}
+.gameline-band.vampire{background:linear-gradient(135deg,rgba(80,0,0,.4) 0%,rgba(10,10,15,.9) 60%);border:1px solid rgba(139,0,0,.3)}
+.gameline-band.werewolf{background:linear-gradient(135deg,rgba(50,30,0,.4) 0%,rgba(10,10,15,.9) 60%);border:1px solid rgba(139,105,20,.3)}
+.gameline-band.mage{background:linear-gradient(135deg,rgba(0,40,80,.4) 0%,rgba(10,10,15,.9) 60%);border:1px solid rgba(30,60,120,.5)}
+.gameline-band.hunter{background:linear-gradient(135deg,rgba(10,20,50,.4) 0%,rgba(10,10,15,.9) 60%);border:1px solid rgba(40,80,160,.4)}
+.gameline-band h2{font-family:var(--font-head);font-size:clamp(1.8rem,3vw,2.8rem);color:var(--parchment);margin-bottom:.5rem}
+.gameline-band.vampire h2 span{color:var(--crimson)}.gameline-band.werewolf h2 span{color:#c8a52a}.gameline-band.mage h2 span{color:#6a9fd8}.gameline-band.hunter h2 span{color:#7a9fd8}
+.gameline-band p{color:var(--silver);font-style:italic;max-width:700px;font-size:1.05rem}
+
+/* FACTION GRID */
+.faction-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:1rem;margin:2rem 0}
+.faction-card{background:rgba(10,10,15,.8);border:1px solid rgba(139,0,0,.15);padding:1.25rem 1.5rem;transition:all .2s ease}
+.faction-card:hover{border-color:rgba(139,0,0,.4);background:rgba(20,5,5,.8)}
+.faction-card h4{font-family:var(--font-sub);font-size:.95rem;color:var(--parchment);margin-bottom:.4rem}
+.faction-card .fd{font-size:.8rem;color:var(--aged);font-family:var(--font-sub);letter-spacing:.05em;margin-bottom:.5rem}
+.faction-card p{font-size:.85rem;color:var(--silver);line-height:1.6}
+
+/* LORE TEXT */
+.lore-text{max-width:900px;margin:0 auto 3rem}
+.lore-text h2{font-family:var(--font-head);font-size:1.8rem;color:var(--parchment);margin:2rem 0 1rem}
+.lore-text h3{font-family:var(--font-sub);font-size:1.1rem;color:var(--parchment);margin:1.75rem 0 .75rem;letter-spacing:.05em;border-left:3px solid var(--blood);padding-left:.75rem}
+.lore-text p{color:var(--silver);line-height:1.85;margin-bottom:1.1rem;font-size:.95rem}
+.lore-text ul{list-style:none;padding-left:1rem;margin-bottom:1rem}
+.lore-text ul li{color:var(--silver);font-size:.92rem;padding:.3rem 0 .3rem 1.5rem;position:relative}
+.lore-text ul li::before{content:'◆';color:var(--blood);font-size:.6rem;position:absolute;left:0;top:50%;transform:translateY(-50%)}
+
+/* COSMOS GRID */
+.cosmos-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin:3rem 0}
+@media(max-width:900px){.cosmos-grid{grid-template-columns:1fr}}
+.cosmos-node{text-align:center;padding:2.5rem 1.5rem;border:1px solid rgba(139,0,0,.2);background:rgba(10,5,15,.8);position:relative}
+.cosmos-node::before{content:'';position:absolute;inset:4px;border:1px solid rgba(139,0,0,.06);pointer-events:none}
+.cosmos-symbol{font-size:3.5rem;display:block;margin-bottom:1rem;line-height:1}
+.cosmos-node h3{font-family:var(--font-head);font-size:1.3rem;color:var(--parchment);margin-bottom:.75rem}
+.cosmos-node p{font-size:.88rem;color:var(--silver);line-height:1.7}
+.cosmos-node.wyld{border-color:rgba(20,100,20,.3)}.cosmos-node.wyld .cosmos-symbol{color:#3a8a3a;text-shadow:0 0 20px rgba(30,100,30,.5)}
+.cosmos-node.weaver{border-color:rgba(80,80,160,.3)}.cosmos-node.weaver .cosmos-symbol{color:#5a7acc;text-shadow:0 0 20px rgba(60,80,200,.5)}
+.cosmos-node.wyrm{border-color:rgba(100,0,0,.4)}.cosmos-node.wyrm .cosmos-symbol{color:var(--crimson);text-shadow:0 0 20px rgba(139,0,0,.6)}
+
+/* TIMELINE */
+.timeline{position:relative;padding-left:2.5rem}
+.timeline::before{content:'';position:absolute;left:.5rem;top:0;bottom:0;width:1px;background:linear-gradient(to bottom,var(--blood),transparent)}
+.timeline-item{position:relative;margin-bottom:2.5rem}
+.timeline-item::before{content:'';position:absolute;left:-2.1rem;top:.4rem;width:8px;height:8px;border-radius:50%;background:var(--blood);box-shadow:0 0 8px var(--blood)}
+.tdate{font-family:var(--font-sub);font-size:.72rem;letter-spacing:.15em;text-transform:uppercase;color:var(--blood);margin-bottom:.3rem}
+.ttitle{font-family:var(--font-sub);font-size:1rem;color:var(--parchment);margin-bottom:.5rem;font-weight:600}
+.tbody{font-size:.88rem;color:var(--silver);line-height:1.7}
+
+/* FAN PROJECTS */
+.fan-hero{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-bottom:3rem}
+@media(max-width:768px){.fan-hero{grid-template-columns:1fr}}
+.fan-card{background:rgba(10,10,15,.9);border:1px solid rgba(139,0,0,.2);overflow:hidden}
+.fan-top{padding:2rem;background:linear-gradient(135deg,rgba(80,0,0,.3) 0%,transparent 60%);border-bottom:1px solid rgba(139,0,0,.15)}
+.fan-top h2{font-family:var(--font-head);font-size:1.6rem;color:var(--parchment);margin-bottom:.3rem}
+.fan-top h2 span{color:var(--crimson)}
+.fan-type{font-family:var(--font-sub);font-size:.7rem;letter-spacing:.25em;text-transform:uppercase;color:var(--blood)}
+.fan-body{padding:1.5rem 2rem 2rem;font-size:.9rem;color:var(--silver);line-height:1.8}
+.fan-body h3{font-family:var(--font-sub);font-size:.85rem;color:var(--parchment);margin:1.25rem 0 .5rem;text-transform:uppercase;letter-spacing:.1em}
+.fan-body ul{list-style:none;padding-left:.5rem}
+.fan-body ul li::before{content:'— ';color:var(--blood)}
+.fan-link{display:inline-block;margin-top:1rem;padding:.5rem 1.25rem;border:1px solid var(--blood);color:var(--parchment);font-family:var(--font-sub);font-size:.72rem;letter-spacing:.15em;text-transform:uppercase;text-decoration:none;transition:all .2s ease}
+.fan-link:hover{background:var(--blood);box-shadow:0 0 15px rgba(139,0,0,.3)}
+
+/* ORACLE */
+#section-oracle{background:radial-gradient(ellipse at 50% 0%,rgba(20,5,30,.6) 0%,var(--void) 60%)}
+.oracle-wrap{max-width:900px;margin:0 auto}
+.oracle-hdr{text-align:center;margin-bottom:2rem}
+.oracle-sigil{font-size:4rem;color:var(--blood);text-shadow:0 0 30px rgba(139,0,0,.7),0 0 60px rgba(80,0,100,.3);animation:pulseBlood 3s infinite;display:block;font-family:serif}
+.oracle-name{font-family:var(--font-head);font-size:2.5rem;color:var(--parchment);margin-top:.5rem}
+.oracle-subtitle{font-family:var(--font-sub);font-size:.75rem;letter-spacing:.4em;text-transform:uppercase;color:var(--aged);margin-top:.5rem}
+.oracle-info{background:rgba(139,0,0,.08);border:1px solid rgba(139,0,0,.2);padding:1rem 1.5rem;margin-bottom:2rem;font-size:.82rem;color:var(--aged);font-family:var(--font-sub);text-align:center;letter-spacing:.03em}
+.oracle-chat{background:rgba(5,5,10,.95);border:1px solid rgba(139,0,0,.25);min-height:450px;max-height:550px;overflow-y:auto;padding:1.5rem;display:flex;flex-direction:column;gap:1.25rem;margin-bottom:1.5rem}
+.chat-msg{display:flex;gap:1rem;align-items:flex-start;animation:fadeUp .3s ease}
+.chat-msg.user{flex-direction:row-reverse}
+.chat-av{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;border:1px solid rgba(139,0,0,.4)}
+.chat-msg.oracle .chat-av{background:radial-gradient(circle,rgba(80,0,0,.5),rgba(20,0,30,.8))}
+.chat-msg.user .chat-av{background:rgba(20,20,30,.8);border-color:rgba(100,100,150,.3)}
+.chat-bubble{max-width:80%;padding:1rem 1.25rem;font-size:.9rem;line-height:1.75}
+.chat-msg.oracle .chat-bubble{background:rgba(30,5,5,.6);border:1px solid rgba(139,0,0,.2);color:var(--parchment);border-radius:0 8px 8px 8px}
+.chat-msg.user .chat-bubble{background:rgba(20,20,40,.7);border:1px solid rgba(80,80,120,.3);color:var(--moonsilver);border-radius:8px 0 8px 8px;text-align:right}
+.chat-bubble strong{color:var(--crimson);font-family:var(--font-sub)}
+.typing{display:none;align-items:center;gap:.5rem;padding:.5rem 0}
+.typing.active{display:flex}
+.tdot{width:6px;height:6px;border-radius:50%;background:var(--blood);animation:tdBounce 1.2s ease infinite}
+.tdot:nth-child(2){animation-delay:.2s}.tdot:nth-child(3){animation-delay:.4s}
+@keyframes tdBounce{0%,100%{transform:translateY(0);opacity:.4}50%{transform:translateY(-4px);opacity:1}}
+.oracle-controls{display:flex;gap:.5rem;justify-content:flex-end;margin-bottom:.5rem}
+.oracle-ctrl{padding:.3rem .75rem;background:none;border:1px solid rgba(139,0,0,.2);color:var(--aged);font-family:var(--font-sub);font-size:.65rem;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:all .2s ease}
+.oracle-ctrl:hover{border-color:var(--blood);color:var(--parchment)}
+.oracle-input-area{display:flex;gap:.75rem;align-items:flex-end}
+.oracle-input{flex:1;background:rgba(10,10,20,.9);border:1px solid rgba(139,0,0,.3);color:var(--parchment);font-family:var(--font-body);font-size:.95rem;padding:.9rem 1.25rem;resize:none;min-height:50px;max-height:150px;outline:none;transition:border-color .2s ease;line-height:1.5}
+.oracle-input:focus{border-color:rgba(139,0,0,.6);box-shadow:0 0 15px rgba(139,0,0,.1)}
+.oracle-input::placeholder{color:rgba(200,173,127,.3)}
+.oracle-send{padding:.9rem 1.75rem;background:var(--blood);border:none;color:#fff;font-family:var(--font-sub);font-size:.78rem;letter-spacing:.15em;text-transform:uppercase;cursor:pointer;transition:all .2s ease;white-space:nowrap}
+.oracle-send:hover{background:var(--crimson);box-shadow:0 0 20px rgba(139,0,0,.4)}
+.oracle-prompts{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1rem}
+.oprompt{padding:.4rem .9rem;background:rgba(139,0,0,.08);border:1px solid rgba(139,0,0,.25);color:var(--aged);font-family:var(--font-sub);font-size:.7rem;cursor:pointer;transition:all .2s ease;letter-spacing:.05em}
+.oprompt:hover{background:rgba(139,0,0,.2);color:var(--parchment)}
+.related-btn{background:rgba(139,0,0,.1);border:1px solid rgba(139,0,0,.3);color:var(--parchment);font-family:var(--font-sub);font-size:.7rem;padding:.3rem .8rem;margin:.25rem .25rem 0 0;cursor:pointer;transition:all .2s}
+.related-btn:hover{background:rgba(139,0,0,.3)}
+
+/* MISC */
+.divider{width:100%;height:1px;background:linear-gradient(90deg,transparent,rgba(139,0,0,.3),transparent);margin:3rem 0}
+footer{background:var(--void);border-top:1px solid rgba(139,0,0,.2);padding:3rem 2rem;text-align:center}
+footer p{font-family:var(--font-sub);font-size:.72rem;letter-spacing:.1em;color:var(--aged);line-height:2}
+.footer-logo{font-family:var(--font-head);font-size:1.5rem;color:var(--blood);margin-bottom:1rem;text-shadow:0 0 10px rgba(139,0,0,.3)}
+@media(max-width:600px){.section{padding:3rem 1rem}.nav-logo{display:none}.content-grid{grid-template-columns:1fr}.faction-grid{grid-template-columns:1fr}.oracle-chat{min-height:300px}}
+</style>
+<meta property="og:title" content="World of Darkness — The Codex Noctis" data-id="th-modified"><meta name="description" content="online_viewer_net (8)" data-id="th-modified"><meta property="og:description" content="online_viewer_net (8)" data-id="th-modified"><meta property="og:image" content="https://tiiny.host/assets/logo-purple-bg.png" data-id="th-modified"><meta property="og:url" content="https://codex-noctus.tiiny.site/" data-id="th-modified"><meta property="og:type" content="website" data-id="th-modified"><script defer="" data-domain="codex-noctus.tiiny.site" src="https://analytics.tiiny.site/js/plausible.js"></script><script type="text/javascript" src="https://tiiny.host/ad-script.js"></script></head>
+<body>
+
+<div id="loader">
+  <div class="loader-symbol">WoD</div>
+  <div class="loader-text">Entering the World of Darkness</div>
+  <div class="loader-bar"></div>
+</div>
+
+<section id="hero">
+  <div class="hero-rings"><div class="ring"></div><div class="ring"></div><div class="ring"></div><div class="ring"></div><div class="ring"></div></div>
+  <div class="hero-sigil">⛧</div>
+  <h1 class="hero-title">The <span>World</span> of Darkness</h1>
+  <p class="hero-sub">Codex Noctis — The Complete Compendium</p>
+  <div class="hero-divider"></div>
+  <p class="hero-tagline"><em>"This world is of blind entropy. The Wyrm's forces march ever-forth, and the leeches feed of man to shackle the beast within, clinging to they're fleeting humanity,  our history buried with the bodies it hides. Wreathed in the decaying truth in the labryith of Malfeas. The world is of grutesque deceit, slaughter and massacre, the raging fires burn with... When will you let it out?"</em></p>
+  <div class="hero-pills">
+    <a class="hero-pill" href="javascript:void(0)" onclick="showSection('overview')">Overview</a>
+    <a class="hero-pill" href="javascript:void(0)" onclick="showSection('20th')">20th Edition</a>
+    <a class="hero-pill" href="javascript:void(0)" onclick="showSection('lore')">Lore Archive</a>
+    <a class="hero-pill" href="javascript:void(0)" onclick="showSection('mythology')">Mythology</a>
+    <a class="hero-pill" href="javascript:void(0)" onclick="showSection('darkages')">Dark Ages</a>
+    <a class="hero-pill" href="javascript:void(0)" onclick="showSection('fanprojects')">Fan Projects</a>
+    <a class="hero-pill" href="javascript:void(0)" onclick="showSection('oracle')">⬡ The Oracle</a>
+  </div>
+  <div class="scroll-ind" onclick="document.getElementById('main-nav').scrollIntoView({behavior:'smooth'})">
+    <span>Descend</span><div class="scroll-line"></div>
+  </div>
+</section>
+
+<nav id="main-nav">
+  <div class="nav-inner">
+    <div class="nav-logo">WoD</div>
+    <button class="nav-btn active" onclick="showSection('overview')">Overview</button>
+    <button class="nav-btn" onclick="showSection('20th')">20th Edition</button>
+    <button class="nav-btn" onclick="showSection('lore')">Lore Archive</button>
+    <button class="nav-btn" onclick="showSection('mythology')">Mythology</button>
+    <button class="nav-btn" onclick="showSection('darkages')">Dark Ages</button>
+    <button class="nav-btn" onclick="showSection('fanprojects')">Fan Projects</button>
+    <button class="nav-btn" onclick="showSection('oracle')">⬡ The Oracle</button>
+  </div>
+</nav>
+
+<!-- OVERVIEW -->
+<section id="section-overview" class="section active">
+  <div class="section-inner">
+    <div class="section-header">
+      <p class="section-eyebrow">White Wolf Publishing · Onyx Path Publishing</p>
+      <h1 class="section-title">The <span>World</span> of Darkness</h1>
+      <p class="section-desc">A gothic-punk universe where monsters are real, humanity is fading, and every night could be your last.</p>
+    </div>
+    <div class="wod-quote">
+      <blockquote>"Cities sprawl like infected wounds upon a diseased earth. The wilderness is not safe; the wild is receding. Even the stars seem cold and distant, offering no comfort to those who look up in desperate hope."</blockquote>
+      <cite>— World of Darkness Core Setting Philosophy, White Wolf Publishing</cite>
+    </div>
+    <div class="content-grid">
+      <div class="lore-card" onclick="showSection('lore');showSubTab('lore','vtm')">
+        <span class="card-icon">🩸</span>
+        <div class="card-title">Vampire: The Masquerade</div>
+        <div class="card-body">Play as a Kindred — an immortal predator of the night. Navigate the Jyhad, the eternal war between ancient Methuselahs. Thirteen Clans, the Camarilla, Sabbat, and Anarchs fight for dominance in a world built on a lie.</div>
+        <span class="card-tag">VtM · V20</span>
+      </div>
+      <div class="lore-card" onclick="showSection('lore');showSubTab('lore','wta')">
+        <span class="card-icon">🐺</span>
+        <div class="card-title">Werewolf: The Apocalypse</div>
+        <div class="card-body">Be the Garou — warriors of Gaia. Fight the Wyrm as the Apocalypse draws near. Thirteen Tribes, five Auspices, and a war that spans the physical and spirit worlds.</div>
+        <span class="card-tag">WtA · W20</span>
+      </div>
+      <div class="lore-card" onclick="showSection('lore');showSubTab('lore','mta')">
+        <span class="card-icon">✦</span>
+        <div class="card-title">Mage: The Ascension</div>
+        <div class="card-body">Bend the laws of physics with magick, but beware Paradox. Nine Traditions, the Technocratic Union, and the Nephandi vie to define what is real.</div>
+        <span class="card-tag">MtA · M20</span>
+      </div>
+      <div class="lore-card" onclick="showSection('lore');showSubTab('lore','htr')">
+        <span class="card-icon">⚡</span>
+        <div class="card-title">Hunter: The Reckoning</div>
+        <div class="card-body">You were ordinary. Then you saw the truth. The Messengers Imbued you with power to fight back. Navigate your Creed, your Edges, and the desperate war against the supernatural.</div>
+        <span class="card-tag">HtR · Revised</span>
+      </div>
+    </div>
+    <div class="divider"></div>
+    <div class="lore-text">
+      <h2>The Gothic-Punk Setting</h2>
+      <p>The Classic World of Darkness (cWoD) is a shared setting first conceived by Mark Rein-Hagen, published by White Wolf beginning in 1991. The world is recognisably modern but darker — cities are corrupt, nature is retreating, and a hidden supernatural layer overlaps everything mortals see. Kindred rule cities in shadow. Garou patrol the spirit-soaked wilderness. Mages wage a secret war over the definition of reality. Hunters fight back with faith and fury.</p>
+      <p>After the original line concluded in 2004, Onyx Path Publishing revitalised the property with <strong>20th Anniversary Editions</strong> beginning in 2011 — comprehensive hardcovers unifying decades of canon. V20 (2011), W20 (2012), M20 (2015), C20 (2016), and Wraith 20 (2018) are widely considered the pinnacle of Classic WoD design.</p>
+    </div>
+    <div class="rules-grid">
+      <div class="rules-card"><h4>The Storyteller System</h4><p>All Classic WoD games use a dice pool system built on d10s. Players roll Attribute + Ability against a Difficulty (usually 6). Each die meeting or exceeding Difficulty = one success. One success accomplishes the task; more successes = better outcome. A botch (more 1s than successes) = catastrophic failure.</p></div>
+      <div class="rules-card"><h4>Personal Horror</h4><p>The scariest thing in WoD is not the monster — it's what the character becomes trying to survive it. Stories explore moral compromise, loss of humanity, and the weight of power. Characters are not heroes — they are monsters trying to remember what humanity means.</p></div>
+      <div class="rules-card"><h4>Shared Cosmology</h4><p>All game lines share infrastructure: the physical world (Tellurian), the spirit Umbra, the Underworld (Shadowlands), and various supernatural planes. The Triat — Wyld, Weaver, Wyrm — governs the metaphysical forces shaping existence.</p></div>
+      <div class="rules-card"><h4>The 20th Anniversary Editions</h4><p>V20 (2011), W20 (2012), M20 (2015), C20 (2016), Wraith 20 (2018). Each collects all editions' canon into one authoritative volume. Self-contained, non-advancing-metaplot, and comprehensive. The recommended entry point for all Classic WoD play.</p></div>
+      <div class="rules-card"><h4>Dark Pack Agreement</h4><p>Paradox Interactive's fan content policy explicitly welcomes fan animations, audio dramas, actual plays, and creative works set in the WoD universe. This enabled Hunter: The Parenting and Norfolk Wizard Game — a contrast to Games Workshop's zero-tolerance policy.</p></div>
+      <div class="rules-card"><h4>Character Creation</h4><p>Characters are defined by nine Attributes (Physical/Social/Mental × 3 each), Abilities (Talents/Skills/Knowledges), supernatural powers, Backgrounds, Virtues, and Humanity/morality tracks. 15 Freebie Points allow customisation after the core build.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 20TH EDITION -->
+<section id="section-20th" class="section">
+  <div class="section-inner">
+    <div class="section-header">
+      <p class="section-eyebrow">Onyx Path Publishing · 2011–Present</p>
+      <h1 class="section-title">The <span>20th Anniversary</span> Editions</h1>
+      <p class="section-desc">Definitive hardcovers representing the pinnacle of Classic World of Darkness design.</p>
+    </div>
+    <div class="sub-tabs">
+      <button class="sub-tab active" onclick="showSubTab('20th','v20')">V20 · Vampire</button>
+      <button class="sub-tab" onclick="showSubTab('20th','w20')">W20 · Werewolf</button>
+      <button class="sub-tab" onclick="showSubTab('20th','m20')">M20 · Mage</button>
+      <button class="sub-tab" onclick="showSubTab('20th','h20')">Hunter</button>
+      <button class="sub-tab" onclick="showSubTab('20th','rules')">Core Rules</button>
+    </div>
+    <div id="20th-v20" class="sub-content active">
+      <div class="gameline-band vampire"><h2><span>Vampire:</span> The Masquerade 20th Anniversary</h2><p>Released October 2011. 560+ pages. Every clan, bloodline, discipline, and tradition in one definitive tome. The Kickstarter that proved massive demand for Classic WoD still existed.</p></div>
+      <div class="lore-text">
+        <h3>Overview</h3>
+        <p>V20 presents vampiric existence as personal horror and political intrigue. Each Kindred balances the Beast (predatory, inhuman drive) against whatever Humanity remains. The core tension: how much of yourself will you sacrifice to survive?</p>
+        <h3>The Thirteen Clans</h3>
+      </div>
+      <div class="faction-grid">
+        <div class="faction-card"><h4>Brujah</h4><div class="fd">Clan of the Rebel · Camarilla</div><p>Once philosopher-kings of Carthage, now passionate rebels. Disciplines: Celerity, Potence, Presence. Weakness: fierce temper, difficult Frenzy rolls.</p></div>
+        <div class="faction-card"><h4>Gangrel</h4><div class="fd">Clan of the Beast · Independent</div><p>Feral wanderers. Each Frenzy adds an animal feature permanently. Disciplines: Animalism, Fortitude, Protean.</p></div>
+        <div class="faction-card"><h4>Malkavian</h4><div class="fd">Clan of the Moon · Camarilla</div><p>All are cursed with profound madness, yet share strange insight. Disciplines: Auspex, Dementation, Obfuscate.</p></div>
+        <div class="faction-card"><h4>Nosferatu</h4><div class="fd">Clan of the Hidden · Camarilla</div><p>Hideously deformed, Appearance 0 always. Masters of shadow and secrets. Disciplines: Animalism, Obfuscate, Potence.</p></div>
+        <div class="faction-card"><h4>Toreador</h4><div class="fd">Clan of the Rose · Camarilla</div><p>Aesthetes entranced by beauty — they can freeze when witnessing it. Disciplines: Auspex, Celerity, Presence.</p></div>
+        <div class="faction-card"><h4>Tremere</h4><div class="fd">Clan of the Usurpers · Camarilla</div><p>Mages who stole vampiric immortality. Blood-bound to Clan hierarchy. Disciplines: Auspex, Dominate, Thaumaturgy.</p></div>
+        <div class="faction-card"><h4>Ventrue</h4><div class="fd">Clan of Kings · Camarilla</div><p>Blue-blooded aristocrats who lead the Camarilla. Can only feed from one mortal type. Disciplines: Dominate, Fortitude, Presence.</p></div>
+        <div class="faction-card"><h4>Lasombra</h4><div class="fd">Clan of the Night · Sabbat</div><p>Masters of living shadow. Cast no reflection. Disciplines: Dominate, Obtenebration, Potence.</p></div>
+        <div class="faction-card"><h4>Tzimisce</h4><div class="fd">Clan of the Dragon · Sabbat</div><p>Terrifying fleshcrafters. Must sleep in native soil. Disciplines: Animalism, Auspex, Vicissitude.</p></div>
+        <div class="faction-card"><h4>Assamite</h4><div class="fd">Clan of the Mountain · Independent</div><p>Assassins and warriors. Tremere-cursed to crack when drinking Kindred blood. Disciplines: Celerity, Obfuscate, Quietus.</p></div>
+        <div class="faction-card"><h4>Giovanni</h4><div class="fd">Clan of Death · Independent</div><p>Necromantic crime family who consumed the Cappadocians. Disciplines: Dominate, Necromancy, Potence.</p></div>
+        <div class="faction-card"><h4>Ravnos</h4><div class="fd">Clan of the Trickster · Independent</div><p>Wandering illusionists. Nightly compulsion to indulge a vice. Disciplines: Animalism, Chimerstry, Fortitude.</p></div>
+        <div class="faction-card"><h4>Followers of Set</h4><div class="fd">Serpent Cultists · Independent</div><p>Worshippers of the Egyptian god Set. Extra vulnerability to holy light. Disciplines: Obfuscate, Presence, Serpentis.</p></div>
+      </div>
+      <div class="lore-text" style="margin-top:2rem;">
+        <h3>The Three Sects</h3>
+        <p><strong>The Camarilla</strong> — Founded 1486. Seven Clans. Enforces the Masquerade. Hierarchy: Prince → Primogen → Sheriff → Archon → Justicar → Inner Circle. Conservative, self-preserving, politically lethal.</p>
+        <p><strong>The Sabbat</strong> — Violent religious sect. Practices Vaulderie (shared blood loyalty), Paths of Enlightenment (replacing Humanity), and Diablerie openly. Hierarchy: Regent → Cardinals → Archbishops → Bishops → Packs. Believes Kindred should rule openly and prepare to resist Gehenna.</p>
+        <p><strong>The Anarchs</strong> — Self-determination movement. No formal hierarchy. Barons manage Free States. Greatest achievement: the Anarch Free State of California (Los Angeles).</p>
+        <h3>Key Mechanics</h3>
+      </div>
+      <div class="rules-grid">
+        <div class="rules-card"><h4>Generation &amp; Blood Pool</h4><p>Generation measures steps from Caine. 3rd = Antediluvians. 13th+ = thin-bloods. Lower generation = larger Blood Pool, more Discipline power. Diablerie (consuming another's soul) lowers Generation at severe moral cost.</p></div>
+        <div class="rules-card"><h4>Humanity &amp; The Beast</h4><p>Humanity 1–10. Hierarchy of sins at each level. Failing Degeneration checks costs Humanity permanently. At 0: wassail — total Beast dominance. Frenzy triggered by hunger, anger, fire, sunlight. Rotshreck = terror-frenzy from fire/sun.</p></div>
+        <div class="rules-card"><h4>The Six Traditions</h4><p>① Masquerade ② Domain (Prince's law) ③ Progeny (Embrace with permission) ④ Accounting (sires responsible for childer) ⑤ Hospitality (announce to Prince on arrival) ⑥ Destruction (only Prince may order Final Death).</p></div>
+        <div class="rules-card"><h4>Disciplines Overview</h4><p>Animalism · Auspex · Celerity · Chimerstry · Dementation · Dominate · Fortitude · Necromancy · Obfuscate · Obtenebration · Potence · Presence · Protean · Quietus · Serpentis · Thaumaturgy · Vicissitude. Each rated 1–5 with Elder powers beyond.</p></div>
+      </div>
+    </div>
+    <div id="20th-w20" class="sub-content">
+      <div class="gameline-band werewolf"><h2><span>Werewolf:</span> The Apocalypse 20th Anniversary</h2><p>Released 2012. All thirteen Tribes, five Auspices, full Umbra, and the complete war against the Wyrm in one volume.</p></div>
+      <div class="lore-text">
+        <h3>Five Auspices</h3>
+      </div>
+      <div class="faction-grid">
+        <div class="faction-card"><h4>Ragabash</h4><div class="fd">New Moon · Trickster</div><p>Scouts, questioners, jesters. Lowest Rage. Challenge the status quo through cunning.</p></div>
+        <div class="faction-card"><h4>Theurge</h4><div class="fd">Crescent Moon · Spirit-Worker</div><p>Shamans and spirit-speakers. Keepers of sacred Rites. Highest Gnosis.</p></div>
+        <div class="faction-card"><h4>Philodox</h4><div class="fd">Half Moon · Judge</div><p>Arbiters of Garou law. Mediators of conflict. Preserve the Litany.</p></div>
+        <div class="faction-card"><h4>Galliard</h4><div class="fd">Gibbous Moon · Moon Dancer</div><p>Lorekeepers and storytellers. Preserve Garou history through song and howl.</p></div>
+        <div class="faction-card"><h4>Ahroun</h4><div class="fd">Full Moon · Warrior</div><p>Maximum Rage. Born to lead the charge. Highest combat potential.</p></div>
+      </div>
+      <div class="lore-text" style="margin-top:2rem;"><h3>Thirteen Tribes</h3></div>
+      <div class="faction-grid">
+        <div class="faction-card"><h4>Black Furies</h4><div class="fd">Gaia's Avengers · Greek</div><p>Predominantly female warriors. Protect wild places and the divine feminine. Patron: Pegasus.</p></div>
+        <div class="faction-card"><h4>Bone Gnawers</h4><div class="fd">Urban Survivors</div><p>Scorned by all, know everything. Patron: Rat. Resilient and surprisingly wise.</p></div>
+        <div class="faction-card"><h4>Children of Gaia</h4><div class="fd">The Peacemakers</div><p>Diplomats and healers. Believe internal Garou peace is essential. Patron: Unicorn.</p></div>
+        <div class="faction-card"><h4>Fianna</h4><div class="fd">Celtic Warriors</div><p>Irish/Celtic warriors, poets, drinkers. Patron: Stag. Passionate and musical.</p></div>
+        <div class="faction-card"><h4>Get of Fenris</h4><div class="fd">Norse Warriors</div><p>Value strength above all. Patron: Fenrir. Controversial racist sub-faction: Sword of Heimdall.</p></div>
+        <div class="faction-card"><h4>Glass Walkers</h4><div class="fd">Corporate Wolves · Urban</div><p>Most technologically advanced. Work within human corporate systems. Patron: City Fathers.</p></div>
+        <div class="faction-card"><h4>Red Talons</h4><div class="fd">Pure Wolf · Lupus-Born</div><p>All born wolves. Deeply hostile to humanity. Patron: Griffin. Advocate human extinction.</p></div>
+        <div class="faction-card"><h4>Shadow Lords</h4><div class="fd">Lords of Thunder</div><p>Machiavellian Eastern European nobles. Patron: Grandfather Thunder. Seek to dominate the Nation.</p></div>
+        <div class="faction-card"><h4>Silent Striders</h4><div class="fd">Cursed Wanderers · Egyptian</div><p>Cursed by vampire Sutekh to wander forever. Nomadic lorekeepers. Patron: Owl.</p></div>
+        <div class="faction-card"><h4>Silver Fangs</h4><div class="fd">Kings of the Nation</div><p>Hereditary rulers. Noble and proud but afflicted with deepening hereditary madness. Patron: Falcon.</p></div>
+        <div class="faction-card"><h4>Stargazers</h4><div class="fd">Eastern Mystics</div><p>Buddhist warrior-monks. Left the Nation to join the Hengeyokai in W20. Patron: Chimera.</p></div>
+        <div class="faction-card"><h4>Uktena</h4><div class="fd">Native American Secret-Keepers</div><p>Guard dangerous lore and bind dark powers. Patron: Uktena (great serpent spirit).</p></div>
+        <div class="faction-card"><h4>Wendigo</h4><div class="fd">Pure Ones · Native American</div><p>Most traditionalist Pure Tribe. Hostile to European contamination. Patron: Wendigo.</p></div>
+      </div>
+      <div class="lore-text" style="margin-top:2rem;">
+        <h3>Five Forms</h3>
+        <ul>
+          <li><strong>Homid</strong> — Full human. No modifiers. Most socially functional.</li>
+          <li><strong>Glabro</strong> — Near-human. Str +2, Sta +2, Man –1, App –1.</li>
+          <li><strong>Crinos</strong> — War Form. 8–9 feet. Str +4, Dex +1, Sta +3. Triggers the Delirium in mortals. Claws and bite deal Aggravated damage. Silver = Aggravated damage.</li>
+          <li><strong>Hispo</strong> — Dire wolf. Str +3, Dex +2, Sta +3. Exceptional speed.</li>
+          <li><strong>Lupus</strong> — Full wolf. Str +1, Dex +2, Sta +2. Enhanced senses, stealth, sustained speed.</li>
+        </ul>
+        <h3>The Litany (Key Laws)</h3>
+        <p>Garou shall not mate with Garou (creates deformed Metis offspring). Combat the Wyrm wherever it dwells. Respect the territory of another. Accept an honourable surrender. Submit to those of higher station. The leader's word is law in times of war.</p>
+      </div>
+    </div>
+    <div id="20th-m20" class="sub-content">
+      <div class="gameline-band mage"><h2><span>Mage:</span> The Ascension 20th Anniversary</h2><p>Released 2015. Over 700 pages — the largest single WoD book ever published. Definitive Mage rules and lore.</p></div>
+      <div class="lore-text">
+        <h3>Overview</h3>
+        <p>M20 is a game of cosmic ambition and philosophical war. Players are the Awakened — mages whose Will has shattered the shackles of consensus reality. The central question: <em>who gets to define what is real?</em></p>
+        <h3>The Nine Traditions</h3>
+      </div>
+      <div class="faction-grid">
+        <div class="faction-card"><h4>Akashic Brotherhood</h4><div class="fd" style="color:#6a9fd8;">Do — Eastern Martial Arts</div><p>The body as the path to Awakening. Physical discipline as metaphysical mastery.</p></div>
+        <div class="faction-card"><h4>Celestial Chorus</h4><div class="fd" style="color:#6a9fd8;">Song — Unified Faith</div><p>All religions worship facets of one divine truth. Power through prayer and sacred song.</p></div>
+        <div class="faction-card"><h4>Cult of Ecstasy</h4><div class="fd" style="color:#6a9fd8;">Senses — Altered States</div><p>Sensation, passion, and altered consciousness as enlightenment. Drugs, music, extremity.</p></div>
+        <div class="faction-card"><h4>Dreamspeakers</h4><div class="fd" style="color:#6a9fd8;">Spirit — Shamanism</div><p>Indigenous shamans and spirit-workers worldwide. Hold deep Umbral knowledge.</p></div>
+        <div class="faction-card"><h4>Euthanatos</h4><div class="fd" style="color:#6a9fd8;">Entropy — Death Mages</div><p>Death as sacred transformation. Misunderstood assassin-healers. Fate as their canvas.</p></div>
+        <div class="faction-card"><h4>Order of Hermes</h4><div class="fd" style="color:#6a9fd8;">Forces — High Magic</div><p>Classical European high magic from Alexandria. Formal and theoretical. Tremere's origin.</p></div>
+        <div class="faction-card"><h4>Sons of Ether</h4><div class="fd" style="color:#6a9fd8;">Matter — Mad Science</div><p>Aether, phlogiston, steam-punk engineering. Discarded science that still works via belief.</p></div>
+        <div class="faction-card"><h4>Verbena</h4><div class="fd" style="color:#6a9fd8;">Life — Blood Witches</div><p>Blood, life-force, and primal cycles. Old Faith pagans and hedge mages.</p></div>
+        <div class="faction-card"><h4>Virtual Adepts</h4><div class="fd" style="color:#6a9fd8;">Correspondence — Hacker Mages</div><p>Defected from Technocracy. Code as magic. Digital space as the next mystical frontier.</p></div>
+      </div>
+      <div class="lore-text" style="margin-top:2rem;">
+        <h3>Nine Spheres of Magick</h3>
+        <ul>
+          <li><strong>Correspondence</strong> — Space, distance, teleportation, wards</li>
+          <li><strong>Entropy</strong> — Chaos, fate, decay, unravelling of patterns</li>
+          <li><strong>Forces</strong> — Fire, electricity, gravity, kinetic energy, light</li>
+          <li><strong>Life</strong> — Biology, healing, transformation of living matter</li>
+          <li><strong>Matter</strong> — Physical substances, alchemy, transmutation</li>
+          <li><strong>Mind</strong> — Telepathy, illusion, memory, dream-walking</li>
+          <li><strong>Prime</strong> — Quintessence (raw magical energy). Required for permanent effects.</li>
+          <li><strong>Spirit</strong> — The Umbra, spirits, crossing the Gauntlet</li>
+          <li><strong>Time</strong> — Temporal perception, prophecy, time manipulation</li>
+        </ul>
+        <h3>Paradox</h3>
+        <p>The universe's immune response to vulgar magic performed in front of Sleepers. Accumulates as a pool. Effects range from botch-additions to Paradox Spirits attacking the mage to catastrophic Backlash and imprisonment in a Paradox Realm. Coincidental magic (looks natural) generates no Paradox.</p>
+        <h3>The Technocracy's Five Conventions</h3>
+        <p><strong>Iteration X</strong> (cyborg transhumanism) · <strong>New World Order</strong> (surveillance and social control) · <strong>Progenitors</strong> (biological engineering) · <strong>Syndicate</strong> (economic control) · <strong>Void Engineers</strong> (space and interdimensional exploration). Not simply villains — they have spent centuries making the world genuinely safer for ordinary humans.</p>
+      </div>
+    </div>
+    <div id="20th-h20" class="sub-content">
+      <div class="gameline-band hunter"><h2><span>Hunter:</span> The Reckoning</h2><p>Published 1999 (Revised 2000). The same world as the Big Three — seen from the only angle that matters: ordinary human beings who fight back.</p></div>
+      <div class="lore-text">
+        <h3>Overview</h3>
+        <p>Hunter begins as a human who witnesses something impossible and, instead of forgetting or going mad, is Imbued by the Messengers — mysterious beings who flood the hunter with supernatural perception and Edges (powers). The Imbuing cannot be reversed. You can never un-see the world as it really is.</p>
+        <h3>The Seven Creeds</h3>
+      </div>
+      <div class="faction-grid">
+        <div class="faction-card"><h4>Avenger</h4><div class="fd" style="color:#8ab4d8;">Zeal · The Driven</div><p>Motivated by loss and rage. Hunt to destroy. Danger: become as monstrous as what you hunt.</p></div>
+        <div class="faction-card"><h4>Defender</h4><div class="fd" style="color:#8ab4d8;">Mercy · The Shield</div><p>Protect the innocent. Endure what others cannot. Power manifests as shielding.</p></div>
+        <div class="faction-card"><h4>Innocent</h4><div class="fd" style="color:#8ab4d8;">Vision · The Newly Imbued</div><p>Recently imbued, still questioning. See clearly but don't always understand what they see.</p></div>
+        <div class="faction-card"><h4>Judge</h4><div class="fd" style="color:#8ab4d8;">Conviction · The Executioners</div><p>Apply justice systematically. Some monsters can be redeemed; others must be destroyed. Judges decide.</p></div>
+        <div class="faction-card"><h4>Martyr</h4><div class="fd" style="color:#8ab4d8;">Sacrifice · The Chosen</div><p>Believe their suffering powers their purpose. Most dangerous and most tragic Creed.</p></div>
+        <div class="faction-card"><h4>Redeemer</h4><div class="fd" style="color:#8ab4d8;">Redemption · The Hopeful</div><p>Believe monsters can be saved. Often naive. Occasionally right. Always controversial.</p></div>
+        <div class="faction-card"><h4>Wayward</h4><div class="fd" style="color:#8ab4d8;">Destruction · The Corrupted</div><p>Not a Creed — a fate. Hunters who slip into indiscriminate killing. Monsters in human skin.</p></div>
+      </div>
+    </div>
+    <div id="20th-rules" class="sub-content">
+      <div class="lore-text">
+        <h2>The Storyteller System — Full Rules</h2>
+        <h3>Building a Dice Pool</h3>
+        <p>Combine Attribute (1–5) + Ability (0–5) for your pool. Roll all dice against Difficulty (usually 6). Each die ≥ Difficulty = one success. 1s subtract successes. One success = task done. More = better. Botch (more 1s than successes) = catastrophic failure.</p>
+        <h3>The Nine Attributes</h3>
+        <ul>
+          <li><strong>Physical:</strong> Strength (brute force) · Dexterity (coordination) · Stamina (endurance)</li>
+          <li><strong>Social:</strong> Charisma (force of personality) · Manipulation (subtle influence) · Appearance (physical appeal)</li>
+          <li><strong>Mental:</strong> Perception (awareness) · Intelligence (reasoning) · Wits (speed of thought)</li>
+        </ul>
+        <h3>Combat Sequence</h3>
+        <p>① Initiative: Dexterity + Wits + d10 roll. ② Declare actions (reverse order). ③ Attack: Dexterity + combat Ability vs. Difficulty 6. ④ Damage: Strength/weapon damage + attack successes vs. Difficulty 6. ⑤ Soak: Stamina vs. Difficulty 6 to reduce damage. Bashing = anyone can soak. Lethal = supernatural toughness required. Aggravated = requires Fortitude or specific powers.</p>
+        <h3>Character Creation Summary</h3>
+        <p>① Concept/Nature/Demeanour ② Attributes: Primary 7 pts / Secondary 5 pts / Tertiary 3 pts ③ Abilities: Primary 13 / Secondary 9 / Tertiary 5 ④ Advantages (powers, Backgrounds) ⑤ Finishing: Humanity usually 7, Willpower from Virtues, 15 Freebie Points (Attribute=5pts, Ability=2pts, Discipline=7pts, Background=1pt, Willpower=1pt).</p>
+        <h3>Experience Costs</h3>
+        <ul>
+          <li>Attribute: current rating × 4</li>
+          <li>Ability: current rating × 2 (new Ability = 3)</li>
+          <li>In-Clan Discipline: current × 5 | Out-of-Clan: current × 7</li>
+          <li>Garou Gift (Tribal): current level × 3 | Other Tribe: × 5</li>
+          <li>Mage Sphere: current × 7 (Affinity Sphere: current × 6)</li>
+          <li>Willpower: current rating</li>
+          <li>Virtue: current × 2</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LORE ARCHIVE -->
+<section id="section-lore" class="section">
+  <div class="section-inner">
+    <div class="section-header">
+      <p class="section-eyebrow">Complete Lore Archive · All Game Lines</p>
+      <h1 class="section-title">The <span>Lore</span> Archive</h1>
+      <p class="section-desc">Every faction, character, event, and secret of the Classic World of Darkness — exhaustively catalogued.</p>
+    </div>
+    <div class="sub-tabs">
+      <button class="sub-tab active" onclick="showSubTab('lore','vtm')">🩸 Vampire</button>
+      <button class="sub-tab" onclick="showSubTab('lore','wta')">🐺 Werewolf</button>
+      <button class="sub-tab" onclick="showSubTab('lore','mta')">✦ Mage</button>
+      <button class="sub-tab" onclick="showSubTab('lore','htr')">⚡ Hunter</button>
+      <button class="sub-tab" onclick="showSubTab('lore','crossover')">⬡ Crossover</button>
+    </div>
+    <div id="lore-vtm" class="sub-content active">
+      <div class="gameline-band vampire"><h2><span>Vampire:</span> The Masquerade — Full Lore</h2><p>From Caine's curse to the coming of Gehenna — the complete mythology of the Kindred.</p></div>
+      <div class="lore-panel open"><div class="lore-panel-header" onclick="togglePanel(this)"><h3>The Creation Myth: Caine &amp; The Book of Nod</h3><span class="panel-icon">▼</span></div><div class="lore-panel-body"><div class="lore-panel-content"><p>The Biblical Cain murdered Abel and was cursed by God: to walk in darkness, burn in sunlight, thirst only for blood, and bear the Mark forever. He wandered to the land of Nod, discovered his immortal curse, and eventually sired three childer (the Second Generation). These three made their own childer — the Antediluvians, founders of the thirteen Clans.</p><p>Caine gathered his bloodline in the <strong>First City</strong> (Enoch). God destroyed it in the Flood. The scattered Kindred began the long game of the Jyhad. The <strong>Book of Nod</strong> — Kindred apocryphal scripture — contains fragments of prophecy, history, and dark verse attributed to Caine himself. Multiple contested translations exist.</p><h4>The Three Curses</h4><ul><li>The Sunlight Curse — daylight causes Aggravated damage; full sun exposure = Final Death</li><li>The Blood Thirst — must feed on living blood to survive</li><li>The Mark — forever recognisable as Other, drawing instinctive fear and hatred</li></ul></div></div></div>
+      <div class="lore-panel"><div class="lore-panel-header" onclick="togglePanel(this)"><h3>Gehenna: The Final Nights &amp; Kindred Apocalypse</h3><span class="panel-icon">▼</span></div><div class="lore-panel-body"><div class="lore-panel-content"><p>Gehenna is the prophesied ending — the night the Antediluvians wake from torpor to devour their descendants. Signs: proliferating thin-bloods, awakening elders, darkening stars, the Week of Nightmares (1999) as a preview. V20 deliberately leaves it unresolved — Storytellers choose their own canon.</p><p><strong>Published Gehenna scenarios:</strong> Wormwood (biblical cataclysm), Fair is Foul (Caine returns), The Crucible of God (mortal judgment), Nightshade (Antediluvians actually feed). Each offers a different answer. <strong>Golconda</strong> — mythical inner peace, the Beast truly tamed — is the alternative to Gehenna: salvation through enlightenment rather than apocalypse.</p><p><strong>The Week of Nightmares (1999):</strong> The Ravnos Antediluvian Zapathasura briefly awoke in Bangladesh. Three ancient Ravnos (the Bodhisattvas) sacrificed themselves to help destroy him. Clan Ravnos was nearly annihilated. A devastating preview of full Gehenna.</p></div></div></div>
+      <div class="lore-panel"><div class="lore-panel-header" onclick="togglePanel(this)"><h3>Kindred Society: Camarilla, Sabbat &amp; Anarchs</h3><span class="panel-icon">▼</span></div><div class="lore-panel-body"><div class="lore-panel-content"><p>The <strong>Camarilla</strong> was founded 1486. Its Inner Circle — one elder per founding Clan — established the Six Traditions. Princes govern cities. Archons and Justicars enforce law across cities. Conservative, hierarchical, and focused on survival.</p><p>The <strong>Sabbat</strong> emerged as a counter-movement. Practices Vaulderie, Paths of Enlightenment, and open Diablerie. Regent → Cardinals → Archbishops → Bishops → Packs. Believes Kindred are Gods among men who should rule openly and resist the Antediluvians rather than serve them.</p><p>The <strong>Anarch Movement</strong> dates to the 15th-century Anarch Revolt. Modern Anarchs range from idealists to nihilists to opportunists. The Free State of California (Los Angeles) is their greatest achievement — a region with no Prince. Governed by Barons.</p></div></div></div>
+      <div class="lore-panel"><div class="lore-panel-header" onclick="togglePanel(this)"><h3>Notable Kindred &amp; Famous Cities</h3><span class="panel-icon">▼</span></div><div class="lore-panel-body"><div class="lore-panel-content"><p><strong>Lucita de Aragón</strong> (Lasombra) — childe of Archbishop Moncada. Independent Anarch. One of the finest shadow-manipulators alive. Protagonist of Clan Novel: Lasombra trilogy.</p><p><strong>Beckett</strong> (Gangrel) — Scholar archaeologist obsessed with Gehenna truth. Most well-travelled non-ancient Kindred. Author of Beckett's Jyhad Diary.</p><p><strong>Hardestadt</strong> (Ventrue) — Camarilla founder. Widely suspected to have been killed and replaced by his own childe impersonating him.</p><p><strong>Mithras</strong> (Ventrue, 4th Gen) — Ancient Prince of London for centuries. Operated openly during the Roman Empire.</p><p><strong>Cities:</strong> Chicago (the definitive Kindred city; Menele the 5th-gen Brujah sleeps beneath it), Los Angeles (Anarch Free State), New York City (most contested), London (ancient Camarilla stronghold, home of Mithras), Vienna (Tremere Clan seat, Chantry of Seven Hills), Mexico City (largest Sabbat-controlled city).</p></div></div></div>
+      <div class="lore-panel"><div class="lore-panel-header" onclick="togglePanel(this)"><h3>Bloodlines &amp; Lost Clans</h3><span class="panel-icon">▼</span></div><div class="lore-panel-body"><div class="lore-panel-content"><ul><li><strong>Salubri</strong> — Healers with a third eye. Hunted to near-extinction by Tremere after Saulot was diableried. A Warrior sub-lineage exists in the Sabbat.</li><li><strong>Cappadocians</strong> — Death-scholars. Largely consumed by the Giovanni who rose from within them.</li><li><strong>Harbingers of Skulls</strong> — Cappadocian survivors returned from the Shadowlands, hideously scarred, seeking revenge on the Giovanni.</li><li><strong>Baali</strong> — Demon-worshippers. Universally despised. Even the Sabbat destroys them on sight.</li><li><strong>Daughters of Cacophony</strong> — Supernatural singers. Songs can shatter sanity. Possible Malkavian/Toreador crossblood.</li><li><strong>Samedi</strong> — Zombie-aesthetic permanently rotting vampires. Associated with Voodoo. Independent.</li><li><strong>True Brujah</strong> — Claim descent from the real Troile. Masters of Temporis (time manipulation).</li><li><strong>Tremere antitribu</strong> — Sabbat Tremere faction, destroyed by mass curse from Vienna in canonical Revised metaplot.</li></ul></div></div></div>
+    </div>
+    <div id="lore-wta" class="sub-content">
+      <div class="gameline-band werewolf"><h2><span>Werewolf:</span> The Apocalypse — Full Lore</h2><p>From the Impergium to the edge of the Final Days — the complete mythology of the Garou.</p></div>
+      <div class="lore-panel open"><div class="lore-panel-header" onclick="togglePanel(this)"><h3>Origins: The Impergium &amp; The War of Rage</h3><span class="panel-icon">▼</span></div><div class="lore-panel-body"><div class="lore-panel-content"><p>The <strong>Impergium</strong> (~10,000–5,000 BCE) was a period when the Garou actively culled human populations — killing any settlement that grew "too large." This trauma is expressed today as the Delirium (species-level terror response to Crinos form). The Impergium ended when Garou acknowledged humanity as Gaia's chosen tool — but the damage was permanent.</p><p>The <strong>War of Rage</strong> was the Garou's unprovoked assault on the other Fera (Changing Breeds). The werebears, wereravens, werecrocodilians, and others were reduced to scattered remnants. This fractured Gaia's entire defensive network. The <strong>Croatan</strong> tribe — one of the three Pure Tribes — sacrificed itself entirely to seal a Wyrm entity during the colonisation of the Americas. Their loss echoes through the remaining Pure Tribes (Uktena, Wendigo) to this day.</p></div></div></div>
+      <div class="lore-panel"><div class="lore-panel-header" onclick="togglePanel(this)"><h3>The Triat: Wyld, Weaver &amp; Wyrm</h3><span class="panel-icon">▼</span></div><div class="lore-panel-body"><div class="lore-panel-content"><p><strong>Wyld</strong> — Primordial creation, chaos, infinite potential. Generates all new existence. Out of balance: formless madness.</p><p><strong>Weaver</strong> — Order, pattern, structure. Takes the Wyld's raw creation and gives it form. Now catastrophically broken — obsessively crystallising everything into unchanging Pattern. The Weaver imprisoned the Wyrm in her Pattern Web, snapping her own balance. Modern technology, bureaucracy, and the Technocracy are her expressions. The Gauntlet thickens because of her.</p><p><strong>Wyrm</strong> — Originally entropy and sacred transformation. Now insane. Imprisoned by the Weaver, it went mad. No longer transforms — corrupts, poisons, and devours. Agents: Pentex Corporation (global megacorp spreading Wyrm-corruption), Banes (corrupt spirits), and the Black Spiral Dancers (Garou corrupted into Wyrm-servants).</p></div></div></div>
+      <div class="lore-panel"><div class="lore-panel-header" onclick="togglePanel(this)"><h3>The Umbra &amp; The Spirit World</h3><span class="panel-icon">▼</span></div><div class="lore-panel-body"><div class="lore-panel-content"><p>Garou enter the Umbra by "stepping sideways" — passing through the Gauntlet with a Gnosis roll. The Gauntlet's thickness varies: 3 at a powerful Caern, 9 at an airport or corporate HQ. The modern world thickens it everywhere.</p><h4>Umbral Regions</h4><ul><li><strong>Penumbra / Near Umbra</strong> — Spirit reflection of the physical world. Familiar but distorted.</li><li><strong>Middle Umbra</strong> — Distinct Realms: Battleground, Wolfhome, Atrocity Realm, Digital Web, Aetherial Realm (Weaver territory), and many others.</li><li><strong>Low Umbra / Shadowlands</strong> — Realm of death. Wraiths exist here. Accessible via Necromancy.</li><li><strong>Deep Umbra / Outer Reaches</strong> — Beyond the Membrane. Alien and incomprehensible. Where things live that are not spirits in any recognisable sense.</li></ul><p><strong>Caerns</strong> are sacred sites where the Gauntlet is minimal and Gnosis flows freely. Each has a type (War, Wisdom, Healing) and a totem spirit. Defending Caerns is the central Garou duty.</p></div></div></div>
+      <div class="lore-panel"><div class="lore-panel-header" onclick="togglePanel(this)"><h3>The Fera &amp; Other Changing Breeds</h3><span class="panel-icon">▼</span></div><div class="lore-panel-body"><div class="lore-panel-content"><ul><li><strong>Bastet</strong> (werecats) — Nine cat tribes. Secret-keepers and independent hunters.</li><li><strong>Corax</strong> (wereravens) — Scouts of Helios. "See everything, know everything, sell everything."</li><li><strong>Gurahl</strong> (werebears) — Healers and ley-line guardians. Nearly destroyed by Garou. Extraordinary healing Gifts.</li><li><strong>Mokole</strong> (werecrocodilians) — "Memory of Gaia." Living libraries with eidetic recall to the dinosaur age.</li><li><strong>Nagah</strong> (weresnakes) — Secret assassins. Keep their existence hidden from virtually everyone. Execute the corrupt.</li><li><strong>Nuwisha</strong> (werecoyotes) — Tricksters serving Coyote. Long gambits most cannot foresee.</li><li><strong>Ratkin</strong> (wererats) — Bitter enemies of Garou. Urban vermin-warriors. Plague-carriers.</li><li><strong>Rokea</strong> (weresharks) — Ocean guardians. Ancient, alien, rarely involved with land affairs.</li><li><strong>Ananasi</strong> (werespiders) — Serve the Weaver, not Gaia. Multi-form. Alien agenda.</li></ul></div></div></div>
+    </div>
+    <div id="lore-mta" class="sub-content">
+      <div class="gameline-band mage"><h2><span>Mage:</span> The Ascension — Full Lore</h2><p>The Ascension War, the fall of Horizon, and the battle for reality.</p></div>
+      <div class="lore-panel open"><div class="lore-panel-header" onclick="togglePanel(this)"><h3>The Mythic History of Awakened Magic</h3><span class="panel-icon">▼</span></div><div class="lore-panel-body"><div class="lore-panel-content"><p>In ancient times, mages operated openly — shamans, priests, philosophers, and sorcerers who shaped early human civilisation were often genuinely Awakened. Before consensus reality solidified, vulgar magic was simply how the world worked.</p><p>The <strong>Order of Reason</strong> (predecessor to the Technocracy) rose in the late medieval period, arguing that a single, universal, rational model of reality would protect humanity from unchecked magical predation. They were not wrong. By the Renaissance, the Nine Mystick Traditions had formalised in opposition. The Council of Nine was founded — an uneasy alliance of incompatible worldviews that has been contentious ever since.</p><p>The <strong>Reckoning</strong> (1997, Revised-era metaplot): Nephandi assaulted and destroyed Horizon — the Traditions' Umbral stronghold — scattering and devastating the Council. M20 steps back from this endpoint, treating all eras as equally valid for play.</p></div></div></div>
+      <div class="lore-panel"><div class="lore-panel-header" onclick="togglePanel(this)"><h3>Nephandi, Marauders &amp; Oracles</h3><span class="panel-icon">▼</span></div><div class="lore-panel-body"><div class="lore-panel-content"><p><strong>Nephandi</strong> — Mages whose Avatars have been inverted. They serve the Wyrm, alien Outer Lords in the Deep Umbra, or the abstract principle of Oblivion. Goal: dissolution of the Tellurian — the end of everything. Both Traditions and Technocracy agree they must be destroyed.</p><p><strong>Marauders</strong> — Awakened mages driven entirely mad. Their Avatars have shattered. They continuously and unconsciously rewrite reality around themselves. Not malevolent — simply catastrophically insane. Encounters are reality-bending disasters.</p><p><strong>Oracles</strong> — Mages who have achieved Ascension. Transcendent beings of near-omnipotent will. No longer inhabit the physical world in any normal sense. Appear only cryptically, apparently unable or unwilling to directly intervene.</p></div></div></div>
+      <div class="lore-panel"><div class="lore-panel-header" onclick="togglePanel(this)"><h3>Avatars, Awakening &amp; Ascension</h3><span class="panel-icon">▼</span></div><div class="lore-panel-body"><div class="lore-panel-content"><p>Every human carries an <strong>Avatar</strong> — a higher spiritual self. Mages are those whose Avatar has burned through the mortal shell in the <strong>Awakening</strong> — a shattering, irreversible revelation that reality is malleable and subject to Will. Always deeply personal. Always different.</p><p><strong>Avatar Types:</strong> Dynamic (change and creation), Pattern (structure and order), Primordial (dissolution and return to basics). Type influences magical style and philosophical orientation.</p><p><strong>Arete</strong> (1–10) — The mage's overall enlightened will. Determines the dice pool for all magical actions. Advancing Arete requires profound in-game experiences and meaningful sacrifice — it cannot simply be purchased with experience points.</p><p><strong>Ascension</strong> (the endgame) — Full union with the Avatar, perfect understanding of Paradigm, transcendence of physical limitation. What Ascension actually means is one of Mage's great unresolvable questions — different Traditions give fundamentally incompatible answers.</p></div></div></div>
+    </div>
+    <div id="lore-htr" class="sub-content">
+      <div class="gameline-band hunter"><h2><span>Hunter:</span> The Reckoning — Full Lore</h2><p>The Imbued, the Messengers, and the war no one asked for.</p></div>
+      <div class="lore-panel open"><div class="lore-panel-header" onclick="togglePanel(this)"><h3>The Imbuing: How Hunters Are Made</h3><span class="panel-icon">▼</span></div><div class="lore-panel-body"><div class="lore-panel-content"><p>A mortal witnesses something undeniably supernatural — a vampire feeding, a werewolf killing, a mage reshaping reality — and instead of the normal human response (denial, forgetting, madness), the Messengers intervene. Visions flood the hunter. Power flows through them. In a moment of terrible clarity, they see the world as it actually is.</p><p>The Imbuing cannot be reversed. The hunter can never forget what they now know. The Messengers continue to communicate only through visions, compulsions, and the Edges they grant. The hunter has been drafted into a war they didn't choose, armed with weapons they don't fully understand, against enemies older, stronger, and better organised. They are expendable soldiers in a war they barely understand — and the Messengers never explain themselves fully.</p></div></div></div>
+      <div class="lore-panel"><div class="lore-panel-header" onclick="togglePanel(this)"><h3>The Messengers &amp; Their True Nature</h3><span class="panel-icon">▼</span></div><div class="lore-panel-body"><div class="lore-panel-content"><p>The Messengers' true nature is one of Hunter's great deliberately unresolved mysteries. Multiple interpretations are supported by canon:</p><ul><li><strong>Angels / Divine Emissaries</strong> — Acting on God's behalf as divine justice against supernatural predators.</li><li><strong>Ancient Human Spirits</strong> — Humanity's collective spiritual self generating defenders through urgent need.</li><li><strong>The Collective Unconscious</strong> — Not beings at all but the psychic gestalt of all humanity manifesting protectors.</li><li><strong>Something Genuinely Alien</strong> — Entities outside known WoD cosmological categories with an entirely opaque agenda.</li></ul><p>What the game makes clear: the Messengers cannot (or will not) directly intervene. They appear to be experimenting. Hunters are their instrument. Instruments are expendable.</p></div></div></div>
+      <div class="lore-panel"><div class="lore-panel-header" onclick="togglePanel(this)"><h3>Edges, Vigil &amp; Mortal Organisations</h3><span class="panel-icon">▼</span></div><div class="lore-panel-body"><div class="lore-panel-content"><p><strong>Edges</strong> are the supernatural powers granted by the Messengers, organised by Creed: Vengeance (Avenger), Defense (Defender), Innocence (Innocent), Judgment (Judge), Martyrdom (Martyr), Redemption (Redeemer). Rated 1–5. Range from perceiving the supernatural to actively harming monsters to protecting bystanders.</p><p><strong>The Vigil</strong> is the ongoing commitment to keep fighting — a sacred duty and psychological need. Unlike the Garou's grand cosmic war or the Kindred's eternal politics, the Hunter's fight is deeply personal, triggered by witnessing the supernatural harm someone they cared about.</p><p><strong>The Arcanum</strong> is a mortal scholarly society that studies the supernatural without the Imbuing. Ancient, cautious, information-focused. They know far more than most hunters but are far less capable of direct action. <strong>True Faith</strong> is a non-Imbued power available to mortals of genuine, absolute belief — capable of harming vampires and repelling supernatural evil. It is real, rare, and unpredictable.</p></div></div></div>
+    </div>
+    <div id="lore-crossover" class="sub-content">
+      <div class="lore-text">
+        <h2>Crossover Lore — How the Game Lines Interact</h2>
+        <h3>The Tremere Problem</h3>
+        <p>The most celebrated crossover. Tremere himself was the founder of the Order of Hermes' House Tremere — a genuine mage. Seeking immortality in the 10th century, his Order diableried the Salubri Antediluvian Saulot, transforming themselves into vampires. This crime against both supernatural orders defines Tremere's place in WoD: universally despised, politically powerful, and uniquely vulnerable to anyone with a grudge from either side of the supernatural divide.</p>
+        <h3>Garou vs. Kindred</h3>
+        <p>Fundamentally incompatible. Vampires register as Wyrm-tainted to Garou spiritual senses — the Beast within is a Wyrm-aligned spirit. Most Garou kill vampires on sight. Vampires find werewolves extravagantly dangerous animals. Cooperation against greater threats (Nephandi, major Wyrm entities) happens but trust never comes easily.</p>
+        <h3>Mage vs. Everyone</h3>
+        <p>Mages are potentially the most powerful WoD entities individually but crippled by Paradox and mortal bodies. Garou see mages as "Namebreakers" — violators of Gaia's natural order. Hunters with sufficient experience sometimes encounter mages and must decide whether they're threats.</p>
+        <h3>Samuel Haight — The Cautionary Tale</h3>
+        <p>The most notorious crossover character. A Kinfolk who stole Garou skins to become a werewolf, then became a Ghoul and independent mage. A cautionary tale about crossover power creep. White Wolf killed him and had his soul soulforged into an ashtray in the Underworld. His resurrection as a normal werewolf is an optional arc in the W20 adventure "Skinner."</p>
+        <h3>The Shared Cosmological Infrastructure</h3>
+        <p>All WoD game lines share the Umbra, Tellurian, and Triat. From Mage's perspective, the Gauntlet is a magical barrier through the Spirit Sphere. From Werewolf's, it's the membrane between worlds. From Vampire's, it's barely relevant — but elders with sufficient Occult may be aware. The Shadowlands (Wraith's setting) interpenetrate both physical and Umbral worlds. The Dreaming (Changeling's realm) touches and diverges from the Umbra in complicated ways.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MYTHOLOGY -->
+<section id="section-mythology" class="section">
+  <div class="section-inner">
+    <div class="section-header">
+      <p class="section-eyebrow">Shared Cosmology · All Game Lines</p>
+      <h1 class="section-title">The <span>Mythology</span> of Darkness</h1>
+      <p class="section-desc">The metaphysical architecture underlying every horror — from the Triat to the Tellurian.</p>
+    </div>
+    <div class="cosmos-grid">
+      <div class="cosmos-node wyld"><span class="cosmos-symbol">🌿</span><h3>The Wyld</h3><p>Primordial creation, chaos, and infinite potential. Generates all new existence. Out of balance: formless madness and dissolution. Its realm is the deep, primal Umbral wilderness.</p></div>
+      <div class="cosmos-node weaver"><span class="cosmos-symbol">🕸️</span><h3>The Weaver</h3><p>Order, pattern, and structure. Now catastrophically broken — obsessively crystallising everything into unchanging Pattern. Technology and bureaucracy are her expressions. She trapped the Wyrm, breaking the balance of all things.</p></div>
+      <div class="cosmos-node wyrm"><span class="cosmos-symbol">🐍</span><h3>The Wyrm</h3><p>Originally entropy and sacred transformation. Now insane, imprisoned by the Weaver. No longer transforms — corrupts, poisons, devours. The great existential threat of the World of Darkness.</p></div>
+    </div>
+    <div class="divider"></div>
+    <div class="lore-text">
+      <h2>The Tellurian &amp; Umbral Architecture</h2>
+      <p>The <strong>Tellurian</strong> is the complete structure of existence — the physical world, all spirit worlds, the Underworld, the Dreaming, and everything between. In Mage cosmology, the Tellurian is the sum total of what is and could be. The <strong>Tapestry</strong> is its physical expression — all Patterns (matter, energy, spirit, mind, time, space) woven together into the fabric of reality.</p>
+      <h3>The Gauntlet</h3>
+      <p>The barrier between the physical world and the spiritual Umbra. Strength varies by location: weakest at sacred sites, Caerns, and old wilderness; thickest in hyper-urban, technological environments. Thicker in the modern age than at any previous point — a direct result of the Technocracy's success in establishing consensus materialism.</p>
+      <h3>Umbral Regions</h3>
+      <p>Closest to the physical world: the <strong>Penumbra</strong> — the spirit-shadow of physical locations. Further in: the <strong>Middle Umbra</strong> with distinct Realms (Battleground, Atrocity Realm, Digital Web, Aetherial Realm, Wolfhome). At the edge: the <strong>Deep Umbra</strong> — beyond the Membrane, where alien entities exist in the space between star systems. Below: the <strong>Shadowlands</strong> — the realm of the dead.</p>
+      <h3>Quintessence &amp; The Tapestry</h3>
+      <p>Quintessence is the raw energy of magic — the fundamental substrate of reality as understood by Mage. Every magical action costs Quintessence. Nodes are places where it accumulates naturally. Garou call the equivalent energy Gnosis. The Tapestry is the sum of all Patterns woven together — and magick is the art of pulling threads and rearranging them according to the mage's will.</p>
+    </div>
+    <div class="divider"></div>
+    <div class="section-header" style="text-align:left;margin-bottom:2rem;"><h2 class="section-title" style="font-size:2rem;">WoD <span>Timeline</span></h2></div>
+    <div class="timeline">
+      <div class="timeline-item"><div class="tdate">Before Recorded History</div><div class="ttitle">The Garou Created &amp; The Impergium</div><div class="tbody">Gaia creates the Garou as her warriors. The Impergium begins — Garou cull human populations. The War of Rage decimates the Fera. The first Caerns established.</div></div>
+      <div class="timeline-item"><div class="tdate">Mythic Past</div><div class="ttitle">Caine's Curse &amp; The First City</div><div class="tbody">Caine kills Abel, becomes the First Vampire. Creates three childer. The First City (Enoch) rises and falls in the Flood. The Antediluvians begin their eternal sleep and manipulation.</div></div>
+      <div class="timeline-item"><div class="tdate">Ancient World</div><div class="ttitle">Egypt, Carthage &amp; The Age of Sorcerers</div><div class="tbody">Followers of Set established in Egypt. Silent Striders cursed by Sutekh. The Brujah utopia of Carthage rises and falls (aided by Rome and the Ventrue). Mages of antiquity work openly.</div></div>
+      <div class="timeline-item"><div class="tdate">~1000 CE</div><div class="ttitle">House Tremere Becomes Vampire</div><div class="tbody">House Tremere (mages) diablerises the Salubri Antediluvian Saulot, transforming themselves into vampires. The Order of Reason's precursors begin organising.</div></div>
+      <div class="timeline-item"><div class="tdate">1230 CE</div><div class="ttitle">The Dark Ages Setting</div><div class="tbody">Cappadocians still active. Salubri still walking. High/Low Clan feudal division. Mongol invasions disrupt Eastern European Kindred territory.</div></div>
+      <div class="timeline-item"><div class="tdate">1486 CE</div><div class="ttitle">The Camarilla Founded</div><div class="tbody">In response to the Inquisition, the major Clans establish the Camarilla and the Masquerade. The Anarch Revolt partially suppressed. The Tremere join the Camarilla.</div></div>
+      <div class="timeline-item"><div class="tdate">1493 CE</div><div class="ttitle">The Sorcerers Crusade — Ascension War Begins</div><div class="tbody">The Order of Reason formally challenges the Traditions. Columbus's voyage signals the assault on New World magical traditions. The Traditions will ultimately lose this war.</div></div>
+      <div class="timeline-item"><div class="tdate">1997 CE</div><div class="ttitle">The Reckoning — Horizon Destroyed</div><div class="tbody">Nephandi assault and destroy Horizon, the Traditions' Umbral stronghold. The Ascension War reaches a critical turning point. A precursor tremor of catastrophe felt across all game lines.</div></div>
+      <div class="timeline-item"><div class="tdate">1999 CE</div><div class="ttitle">The Week of Nightmares</div><div class="tbody">The Ravnos Antediluvian Zapathasura briefly wakes in Bangladesh. Three Bodhisattvas sacrifice themselves. Most of Clan Ravnos is destroyed. A devastating preview of Gehenna.</div></div>
+      <div class="timeline-item"><div class="tdate">2006 CE</div><div class="ttitle">Hunter: The Parenting Setting</div><div class="tbody">Norfolk, UK. Big-D and his family against the Camarilla's expansion into Norfolk. The events of the animated series.</div></div>
+      <div class="timeline-item"><div class="tdate">"The Now" — V20/W20/M20 Era</div><div class="ttitle">The Present</div><div class="tbody">Gehenna looms but has not arrived. The Garou fight a desperate war against the Wyrm. The Traditions rebuild. Hunters multiply. The world grows darker — but the fight continues.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- DARK AGES -->
+<section id="section-darkages" class="section">
+  <div class="section-inner">
+    <div class="section-header">
+      <p class="section-eyebrow">Historical Settings · Dark Ages Line</p>
+      <h1 class="section-title">The <span>Dark Ages</span></h1>
+      <p class="section-desc">When the Masquerade was thinner and the world was stranger — historical World of Darkness settings.</p>
+    </div>
+    <div class="sub-tabs">
+      <button class="sub-tab active" onclick="showSubTab('darkages','dav')">Vampire Dark Ages</button>
+      <button class="sub-tab" onclick="showSubTab('darkages','daw')">Werewolf Dark Ages</button>
+      <button class="sub-tab" onclick="showSubTab('darkages','other')">Other Historical</button>
+    </div>
+    <div id="darkages-dav" class="sub-content active">
+      <div class="gameline-band vampire"><h2><span>Dark Ages:</span> Vampire</h2><p>Originally Vampire: The Dark Ages (1996), revised 2002. Set in 1230 CE — medieval Europe at the height of feudal splendour and spiritual terror.</p></div>
+      <div class="lore-text">
+        <h3>The Setting</h3>
+        <p>Before the Masquerade's full establishment, Kindred interacted far more openly with the mortal world — serving as feudal lords, court advisors, and Church patrons. The Inquisition was not yet the institutionalised force it would become, though genuine witch-hunters with True Faith made the nights dangerous. The Crusades opened trade and predation routes that Kindred exploited ruthlessly.</p>
+        <h3>High Clans &amp; Low Clans</h3>
+        <p><strong>High Clans</strong> (powerful, prestigious): Brujah (as scholar-lords), Cappadocian, Gangrel, Lasombra, Toreador (Troubadours), Tremere (newly vampiric), Tzimisce, Ventrue.<br>
+        <strong>Low Clans</strong> (marginalised, feared): Assamites, Followers of Set, Giovanni (rising), Malkavian, Nosferatu, Ravnos, <em>Salubri</em> (still extant — Tremere hasn't finished their genocide yet).</p>
+        <h3>Roads — Medieval Morality Frameworks</h3>
+        <p>Roads replace modern Paths of Enlightenment. More communal and culturally embedded: <strong>Road of Heaven</strong> (Christian piety), <strong>Road of the Beast</strong> (animalism), <strong>Road of Bones</strong> (death-study), <strong>Road of Sin</strong> (hedonism), <strong>Road of Kings</strong> (lordship and leadership), and others.</p>
+        <h3>Key Historical Events in Dark Ages Canon</h3>
+        <p>The Mongol Invasion (1241) disrupts Tzimisce and Assamite territories. The Crusades function as vampire political theatre — every faction exploits the chaos. The Tremere Clan is insecure and new, not yet the political force it will become. The Giovanni are beginning their long plot against the Cappadocians. The Black Death (1347–1351) has not yet struck — but its seeds are being sown by supernatural forces.</p>
+      </div>
+    </div>
+    <div id="darkages-daw" class="sub-content">
+      <div class="gameline-band werewolf"><h2><span>Werewolf:</span> The Dark Ages &amp; The Wild West</h2><p>The medieval Garou world and 19th-century America — two eras of the Garou's long war.</p></div>
+      <div class="lore-text">
+        <h3>Werewolf: The Dark Ages (1996)</h3>
+        <p>Same 1230 CE period as Dark Ages: Vampire. The Gauntlet is thinner, Caerns more numerous, the Umbra more accessible. The Apocalypse is a distant prophecy rather than immediate reality. The Croatan still exist in the Americas. The Garou Nation is at a higher-water mark. Yet the seeds of future disaster are already being sown: the Order of Reason's precursors begin their work, Eastern Church and Western Church conflict disrupts the spirit world, and the first great Wyrm-taint incidents appear in the East.</p>
+        <h3>Werewolf: The Wild West (1997)</h3>
+        <p>Set in 1881 post-Civil War America. The Pure Tribes (Uktena, Wendigo) face European Garou Tribes as westward expansion devours Native American sacred lands and Caerns. A setting of grief, displacement, and desperate last stands. The Croatan's sacrifice echoes everywhere. One of the most emotionally powerful WoD historical settings — the Apocalypse is not cosmic here but intensely human and political.</p>
+      </div>
+    </div>
+    <div id="darkages-other" class="sub-content">
+      <div class="lore-text">
+        <h2>Other Historical Settings</h2>
+        <h3>Mage: The Sorcerers Crusade (1998)</h3>
+        <p>Set in 1493 CE — the Renaissance. The Order of Reason formally declares war on the Traditions. Columbus's "discovery" of the Americas signals the assault on New World magical traditions. The Traditions will ultimately lose this war — the Sorcerers Crusade shows the opening moves. Bittersweet and historically rich. Uses different mechanics (Houses of the Order of Hermes, Sahajiya, Wu-Keng, etc.) reflecting the pre-Tradition-unification magical world.</p>
+        <h3>Victorian Age: Vampire (2002)</h3>
+        <p>Set in 1886 London. Gaslit gothic. Kindred navigate industrialisation and the scientific revolution (a Technocratic advance) while maintaining the Masquerade through fog and propriety. Jack the Ripper, Oscar Wilde, and the gaslit streets of London provide backdrop for ancient blood games. Kindred structures begin approaching their modern form.</p>
+        <h3>Dark Ages: Mage (2002)</h3>
+        <p>Set in 1230 CE. The unified Tradition structure does not yet exist — instead, disparate magical lineages operate independently: Order of Hermes in its prime, Christian thaumaturges, Islamic scholars, Norse vitkar, Celtic druids. The Consensus is looser, meaning less Paradox but also less protection from the worst abuses of power. Uses Pillars rather than Spheres, reflecting the era's different magical paradigm.</p>
+        <h3>Dark Ages: Inquisitor</h3>
+        <p>Mortal inquisitors with True Faith hunting the supernatural — a precursor in spirit to Hunter: The Reckoning. Reveals that not all Inquisitors were wrong about the supernatural. Some of them were fighting real monsters, with real divine power, and winning.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAN PROJECTS -->
+<section id="section-fanprojects" class="section">
+  <div class="section-inner">
+    <div class="section-header">
+      <p class="section-eyebrow">Ogre Popennang Productions · Bruva Alfabusa</p>
+      <h1 class="section-title">Fan <span>Projects</span></h1>
+      <p class="section-desc">Created under Paradox Interactive's Dark Pack Agreement — extraordinary fan works that brought the World of Darkness to a new generation.</p>
+    </div>
+    <div class="wod-quote">
+      <blockquote>"Big-D and his sons tour a Norfolk ghost trail, stumbling headfirst into a World of Darkness."</blockquote>
+      <cite>— Hunter: The Parenting, Episode 1 Description</cite>
+    </div>
+    <div class="fan-hero">
+      <div class="fan-card">
+        <div class="fan-top"><div class="fan-type">Animated Series · Audio Dramas · Fan Project · Dark Pack</div><h2><span>Hunter:</span> The Parenting</h2></div>
+        <div class="fan-body">
+          <p>Created by <strong>Bruva Alfabusa</strong> and team (Ogre Popennang Productions) — spiritual successor to <em>If the Emperor Had a Text-to-Speech Device</em> (Warhammer 40K fan series). After Games Workshop's 2021 zero-tolerance policy ended TTS, Alfabusa chose WoD specifically because Paradox Interactive's Dark Pack Agreement explicitly welcomes fan creativity.</p>
+          <p>Set in the <strong>latter half of 2006</strong> in <strong>Norfolk, UK</strong>. A Camarilla vampire clan has moved into Norfolk. Big-D and his family are the primary opposition.</p>
+          <h3>Main Characters</h3>
+          <ul>
+            <li><strong>Big-D</strong> — Veteran Imbued Hunter. Wildly eccentric, deeply experienced, secretive. Decades of hunting. Creed deliberately unspecified.</li>
+            <li><strong>Marckus</strong> — Big-D's son. Recently exposed to the supernatural. Reckless, capable. Contains callbacks to Magnus the Red from TTS (deliberate in-joke).</li>
+            <li><strong>Kitten</strong> — Marckus's fiancée. Studious and methodical. The most academically prepared.</li>
+            <li><strong>Door</strong> — Big-D's reliable partner. Inflexible and traditional.</li>
+            <li><strong>Boy</strong> — Door's son. The audience's terror-surrogate. Perpetually terrified.</li>
+            <li><strong>Kevin (Herbertus)</strong> — Tremere vampire. Former accountant. Embraced and enslaved as the Regent's financial manager, then abandoned for correctly noting that mind-controlled employees who starve to death attract tax investigations. Now assists the hunters for protection. Has a cat named <em>Mr. Smerples</em>.</li>
+          </ul>
+          <h3>Format &amp; Release</h3>
+          <p>Two formats: fully animated episodes + audio dramas published between episodes. First episode: <strong>December 18, 2021</strong>. Planned: 15 animated episodes total.</p>
+          <h3>WoD Lore Accuracy</h3>
+          <p>Remarkably accurate to WoD canon: correct Camarilla/Sabbat political structures, Tremere clan dynamics, and Hunter: The Reckoning mechanics. Features Black Shuck (lupus-born Garou with folkloric roots in Norfolk legend), the Prince of Norfolk (6th-gen Ventrue obsessed with Boudica and Iron Age Iceni), and the Regent of Great Yarmouth as antagonists. The Binham Priory tunnel network features as a location with genuine archaeological grounding.</p>
+          <a class="fan-link" href="https://www.youtube.com/@Alfabusa" target="_blank">Watch on YouTube ↗</a>
+          <a class="fan-link" href="https://www.patreon.com/alfabusa" target="_blank" style="margin-left:.5rem">Patreon ↗</a>
+        </div>
+      </div>
+      <div class="fan-card">
+        <div class="fan-top"><div class="fan-type">Actual Play Podcast · Mage: The Ascension · Dark Pack</div><h2><span>Norfolk</span> Wizard Game</h2></div>
+        <div class="fan-body">
+          <p>A <strong>Mage: The Ascension actual-play podcast</strong> by the same Ogre Popennang Productions team, set in the <strong>same WoD continuity as Hunter: The Parenting</strong> — but in <strong>Norfolk, Virginia</strong> (the naming is deliberately parallel to UK Norfolk). Storyteller: <strong>SpeakerD</strong> — also the writer for HTP. Published to Spotify from September 2023.</p>
+          <p>Each player character was introduced through their own individual "Awakening" episode — four separate, deeply personal accounts of how each mage discovered their power. Appropriate to Mage's core ethos: every Awakening is unique and irreversible.</p>
+          <h3>The Mages of Norfolk, Virginia</h3>
+          <ul>
+            <li><strong>Bill Morgan</strong> — Blue-collar journalist. Discovers conspiracy theories are real and stranger than imagined. Awakening: the Great Dismal Swamp.</li>
+            <li><strong>Parker Knickerbocker</strong> — Archaeologist running his father's antique store. An eccentric customer triggers his Awakening — discovering "a clandestine cruelty."</li>
+            <li><strong>Unnamed artist</strong> — Gallery showing destroyed by supernatural darkness, transforming them utterly.</li>
+            <li><strong>Fourth mage</strong> — Awakening episode available on Spotify.</li>
+          </ul>
+          <h3>Continuity with HTP</h3>
+          <p>Explicitly set in the same WoD continuity as Hunter: The Parenting, allowing future crossover possibilities between the Norfolk UK hunters and the Norfolk Virginia mages — a rich narrative possibility the series has begun to explore.</p>
+          <a class="fan-link" href="https://open.spotify.com/show/3V1qZ4lGq7YtqkPOeuELEE" target="_blank">Listen on Spotify ↗</a>
+        </div>
+      </div>
+    </div>
+    <div class="divider"></div>
+    <div class="lore-text">
+      <h2>The Dark Pack Agreement</h2>
+      <p>Paradox Interactive's <strong>Dark Pack Agreement</strong> is the fan content policy that makes both projects possible. Unlike Games Workshop's zero-tolerance policy that ended TTS, Paradox explicitly encourages fan creativity: non-commercial fan animations, audio dramas, actual plays, fan fiction, and artwork set in the WoD universe are all permitted under the Agreement's guidelines (no commercial exploitation, no harmful misrepresentation of the setting's themes, include the Dark Pack disclaimer).</p>
+      <p>Paradox has actively promoted fan projects like Hunter: The Parenting on their official social media — treating fan creators as community ambassadors rather than IP threats. Alfabusa has cited the Dark Pack Agreement directly as a primary reason for choosing World of Darkness: not just that it fit narratively, but that Paradox actively <em>wanted</em> his team's creativity in their universe.</p>
+    </div>
+  </div>
+</section>
+
+<!-- THE ORACLE -->
+<section id="section-oracle" class="section">
+  <div class="section-inner">
+    <div class="oracle-wrap">
+      <div class="oracle-hdr">
+        <span class="oracle-sigil">⬡</span>
+        <div class="oracle-name">The Oracle</div>
+        <div class="oracle-subtitle">Offline Knowledge Engine · No Account Required · Free Forever</div>
+      </div>
+      <div class="oracle-info">✦ The Oracle contains deep built-in knowledge of every World of Darkness game line — lore, rules, mythology, fan projects, clans, tribes, traditions, history, and more. No internet connection, no account, no cost. Ask freely. ✦</div>
+      <div class="oracle-controls">
+        <button class="oracle-ctrl" onclick="clearChat()">Clear Scroll</button>
+        <button class="oracle-ctrl" onclick="exportChat()">Export</button>
+      </div>
+      <div class="oracle-chat" id="oracleChat">
+        <div class="chat-msg oracle">
+          <div class="chat-av">⬡</div>
+          <div class="chat-bubble">
+            <strong>The Oracle speaks:</strong><br><br>
+            Welcome, seeker. I am the Oracle — a built-in repository of all knowledge pertaining to the World of Darkness. I carry the complete lore of the Kindred, the Garou, the Awakened Mages, the Imbued Hunters, the Dark Ages, and the fan works of Bruva Alfabusa.<br><br>
+            I require no key, no account, and no payment. Ask me anything — I will search my depths and return what I find.<br><br>
+            <em>What do you wish to know?</em>
+          </div>
+        </div>
+      </div>
+      <div class="typing" id="oracleTyping">
+        <div class="chat-av" style="width:40px;height:40px;border-radius:50%;border:1px solid rgba(139,0,0,.4);background:radial-gradient(circle,rgba(80,0,0,.5),rgba(20,0,30,.8));display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;">⬡</div>
+        <div style="display:flex;gap:4px;align-items:center;padding:.5rem 0">
+          <div class="tdot"></div><div class="tdot"></div><div class="tdot"></div>
+          <span style="font-family:var(--font-sub);font-size:.7rem;letter-spacing:.1em;color:var(--aged);margin-left:.5rem">The Oracle consults the darkness...</span>
+        </div>
+      </div>
+      <div class="oracle-input-area">
+        <textarea class="oracle-input" id="oracleInput" placeholder="Ask anything about World of Darkness..." rows="2" onkeydown="handleKey(event)"></textarea>
+        <button class="oracle-send" onclick="sendMsg()">Consult ⬡</button>
+      </div>
+      <div class="oracle-prompts">
+        <button class="oprompt" onclick="qp('What is the Jyhad and how does it work?')">The Jyhad</button>
+        <button class="oprompt" onclick="qp('Explain the Triat — Wyld, Weaver and Wyrm')">The Triat</button>
+        <button class="oprompt" onclick="qp('How does Paradox work in Mage: The Ascension?')">Paradox</button>
+        <button class="oprompt" onclick="qp('Tell me about Hunter: The Parenting by Bruva Alfabusa')">Hunter: The Parenting</button>
+        <button class="oprompt" onclick="qp('What is the Norfolk Wizard Game podcast?')">Norfolk Wizard Game</button>
+        <button class="oprompt" onclick="qp('What are all thirteen vampire clans and their disciplines?')">13 Clans</button>
+        <button class="oprompt" onclick="qp('Tell me about all thirteen Garou tribes')">13 Tribes</button>
+        <button class="oprompt" onclick="qp('What are the Nine Traditions in Mage?')">Nine Traditions</button>
+        <button class="oprompt" onclick="qp('What is Gehenna and what are the signs of its arrival?')">Gehenna</button>
+        <button class="oprompt" onclick="qp('How does the Storyteller System work?')">Core Rules</button>
+        <button class="oprompt" onclick="qp('Tell me about the Umbra and the spirit world')">The Umbra</button>
+        <button class="oprompt" onclick="qp('What is the Dark Pack Agreement?')">Dark Pack</button>
+        <button class="oprompt" onclick="qp('How do vampire and werewolf game lines interact?')">Crossover</button>
+        <button class="oprompt" onclick="qp('What are Hunter creeds and Edges?')">Hunter Creeds</button>
+        <button class="oprompt" onclick="qp('Tell me about Vampire: The Dark Ages medieval setting')">Dark Ages</button>
+        <button class="oprompt" onclick="qp('What is the Masquerade and the Six Traditions?')">The Masquerade</button>
+        <button class="oprompt" onclick="qp('Tell me about the Sabbat sect')">The Sabbat</button>
+        <button class="oprompt" onclick="qp('What is Golconda?')">Golconda</button>
+        <button class="oprompt" onclick="qp('Tell me about vampire bloodlines and lost clans')">Bloodlines</button>
+        <button class="oprompt" onclick="qp('What are the five forms of the Garou?')">Five Forms</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">WoD</div>
+  <p>The Codex Noctis — A World of Darkness Compendium</p>
+  <p>All World of Darkness intellectual property belongs to Paradox Interactive AB.</p>
+  <p>Content compiled from the 20th Anniversary Editions (Onyx Path Publishing) and the White Wolf Fandom.</p>
+  <p>Fan Projects section covers content by Ogre Popennang Productions / Bruva Alfabusa, made under the Dark Pack Agreement.</p>
+  <p style="margin-top:1rem;color:rgba(200,173,127,.3)">☽ ✦ ☾</p>
+</footer>
+
+<script>
+// ── NAVIGATION ───────────────────────────────────────────────────────────────
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  const sec = document.getElementById('section-' + id);
+  if (sec) { sec.classList.add('active'); document.getElementById('main-nav').scrollIntoView({behavior:'smooth'}); }
+  document.querySelectorAll('.nav-btn').forEach(b => {
+    const t = b.textContent.toLowerCase();
+    if ((id==='overview'&&t.includes('overview'))||(id==='20th'&&t.includes('20'))||(id==='lore'&&t.includes('lore'))
+      ||(id==='mythology'&&t.includes('myth'))||(id==='darkages'&&t.includes('dark'))||(id==='fanprojects'&&t.includes('fan'))
+      ||(id==='oracle'&&t.includes('oracle'))) b.classList.add('active');
+  });
+}
+
+function showSubTab(sec, tab) {
+  document.querySelectorAll(`#section-${sec} .sub-content`).forEach(c => c.classList.remove('active'));
+  document.querySelectorAll(`#section-${sec} .sub-tab`).forEach(t => t.classList.remove('active'));
+  const el = document.getElementById(`${sec}-${tab}`);
+  if (el) el.classList.add('active');
+  document.querySelectorAll(`#section-${sec} .sub-tab`).forEach(t => {
+    if (t.getAttribute('onclick')?.includes(`'${tab}'`)) t.classList.add('active');
+  });
+}
+
+function togglePanel(hdr) { hdr.parentElement.classList.toggle('open'); }
+
+window.addEventListener('load', () => { setTimeout(() => document.getElementById('loader').classList.add('hidden'), 2200); });
+
+// ── KNOWLEDGE BASE ────────────────────────────────────────────────────────────
+const KB = [
+  {id:'vtm-overview',tags:['vampire','masquerade','vtm','overview','what is','kindred','introduction','gothic'],title:'What is Vampire: The Masquerade?',answer:`<strong>Vampire: The Masquerade</strong> is a gothic-horror tabletop RPG first published by White Wolf in 1991. Players portray <em>Kindred</em> — vampires descended from the Biblical Cain, cursed to drink blood, burn in sunlight, and struggle against the inner Beast.<br><br>The core tension is <strong>personal horror</strong>: how much of your humanity will you sacrifice to survive? Kindred society is dominated by the Camarilla, Sabbat, and Anarchs — all competing in the eternal shadow war called the <strong>Jyhad</strong>. The <strong>20th Anniversary Edition (V20, 2011)</strong> is the definitive version — 560+ pages collecting every clan, bloodline, and rule from the entire classic line.`},
+  {id:'vtm-jyhad',tags:['jyhad','antediluvians','elders','manipulation','conspiracy','eternal war','secret war','methuselah'],title:'The Jyhad — The Eternal Secret War',answer:`The <strong>Jyhad</strong> is the eternal invisible conflict waged by the sleeping <em>Antediluvians</em> (3rd-Generation vampires) through their descendants, using younger Kindred as chess pieces across centuries without the pawns ever realising it.<br><br>Every Kindred political faction, every Prince's decree — the Jyhad's architects claim influence over all of it. Most Kindred dismiss it as paranoid conspiracy. This is exactly what the Antediluvians want. The word itself comes from Arabic — a holy struggle. In Kindred usage it means something colder: an incomprehensibly long game with immortal players and mortal stakes.`},
+  {id:'vtm-caine',tags:['caine','cain','origin','first vampire','biblical','book of nod','curse','abel','creation myth','genesis'],title:'Caine — The First Vampire & The Book of Nod',answer:`The Biblical <strong>Cain</strong> murdered Abel and was cursed by God: walk in darkness, burn in sunlight, thirst only for blood, bear the Mark forever. He wandered to the land of Nod, discovered his immortal curse, and sired three childer (Second Generation). They made the Antediluvians — founders of the thirteen Clans.<br><br>Caine gathered his bloodline in the <strong>First City (Enoch)</strong>. God destroyed it in the Flood. The <strong>Book of Nod</strong> — Kindred apocryphal scripture — contains fragments of prophecy, history, and dark verse attributed to Caine. Multiple contested translations exist. Whether its prophecies are literal, metaphorical, or Antediluvian manipulation is deliberately unresolved.`},
+  {id:'vtm-gehenna',tags:['gehenna','apocalypse','final nights','antediluvians','wake','thin blood','prophecy','week of nightmares','end times'],title:'Gehenna — The Final Nights',answer:`<strong>Gehenna</strong> is the Kindred apocalypse — the prophesied night when the sleeping Antediluvians wake to devour their descendants. Signs: proliferating thin-bloods (15th+ Generation), awakening elders, darkening stars. V20 deliberately refuses to resolve it — Storytellers choose their canon.<br><br><strong>Published Gehenna scenarios:</strong> <em>Wormwood</em> (biblical cataclysm), <em>Fair is Foul</em> (Caine returns), <em>The Crucible of God</em> (mortal judgment on Kindred), <em>Nightshade</em> (Antediluvians actually feed).<br><br><strong>Week of Nightmares (1999):</strong> The Ravnos Antediluvian Zapathasura briefly woke in Bangladesh. Three Bodhisattvas sacrificed themselves to help destroy him. Clan Ravnos was nearly annihilated — a devastating preview of full Gehenna.`},
+  {id:'vtm-masquerade',tags:['masquerade','tradition','six traditions','rule','law','camarilla','secret','exposure','tradition'],title:'The Masquerade & The Six Traditions',answer:`The <strong>Masquerade</strong> is the supreme law of Camarilla society — absolute prohibition on revealing vampiric nature to mortals. Violating it brings swift, brutal consequences from the Prince.<br><br><strong>The Six Traditions:</strong><br>① <em>The Masquerade</em> — conceal your nature<br>② <em>The Domain</em> — the Prince's word is law in their city<br>③ <em>The Progeny</em> — Embrace only with permission<br>④ <em>The Accounting</em> — sires responsible for their childer<br>⑤ <em>Hospitality</em> — announce yourself to the Prince when entering a city<br>⑥ <em>Destruction</em> — only a Prince may call for Final Death<br><br>The Sabbat rejects all Six as chains. The Anarchs accept some based on pragmatism.`},
+  {id:'vtm-13clans',tags:['clans','thirteen clans','13 clans','vampire clans','all clans','list clans','kindred clans','clan list'],title:'The Thirteen Clans of Kindred',answer:`<strong>CAMARILLA:</strong><br>◆ <strong>Brujah</strong> — Rebels. Celerity, Potence, Presence. Weakness: fierce temper/Frenzy rolls.<br>◆ <strong>Gangrel</strong> — Ferals. Animalism, Fortitude, Protean. Weakness: each Frenzy adds a permanent animal feature.<br>◆ <strong>Malkavian</strong> — All are mad. Auspex, Dementation, Obfuscate. Weakness: incurable derangement from Embrace.<br>◆ <strong>Nosferatu</strong> — Deformed. Animalism, Obfuscate, Potence. Weakness: Appearance always 0.<br>◆ <strong>Toreador</strong> — Aesthetes. Auspex, Celerity, Presence. Weakness: can freeze when witnessing beauty.<br>◆ <strong>Tremere</strong> — Mage-vampires. Auspex, Dominate, Thaumaturgy. Weakness: blood-bound to Clan hierarchy.<br>◆ <strong>Ventrue</strong> — Aristocrats. Dominate, Fortitude, Presence. Weakness: can only feed from one mortal type.<br><br><strong>SABBAT:</strong><br>◆ <strong>Lasombra</strong> — Shadow masters. Dominate, Obtenebration, Potence. Cast no reflection.<br>◆ <strong>Tzimisce</strong> — Fleshcrafters. Animalism, Auspex, Vicissitude. Must sleep in native soil.<br><br><strong>INDEPENDENT:</strong><br>◆ <strong>Assamite</strong> — Assassins. Celerity, Obfuscate, Quietus. Tremere-cursed re: Kindred blood.<br>◆ <strong>Giovanni</strong> — Necromantic crime family. Dominate, Necromancy, Potence.<br>◆ <strong>Ravnos</strong> — Illusionists. Animalism, Chimerstry, Fortitude. Nightly compulsion to indulge a vice.<br>◆ <strong>Followers of Set</strong> — Serpent cultists. Obfuscate, Presence, Serpentis. Extra vulnerability to holy light.`},
+  {id:'vtm-sects',tags:['camarilla','sabbat','anarchs','sects','sect','prince','regent','baron','hierarchy'],title:'The Three Sects — Camarilla, Sabbat & Anarchs',answer:`<strong>The Camarilla</strong> — Founded 1486. Seven founding Clans. Enforces the Masquerade. Hierarchy: Neonate → Ancilla → Elder → Sheriff → Primogen → Prince → Archon → Justicar → Inner Circle. Conservative, hierarchical, survival-focused.<br><br><strong>The Sabbat</strong> — Violent religious sect. Practices Vaulderie (shared blood loyalty), Paths of Enlightenment (replacing Humanity), and open Diablerie. Hierarchy: Regent → Cardinals → Archbishops → Bishops → Priests → Packs. Believes Kindred should rule openly as Gods among men and resist the Antediluvians.<br><br><strong>The Anarchs</strong> — Self-determination movement. No formal hierarchy. Barons manage Free States. The Anarch Free State of California (Los Angeles) — established by Salvador Garcia — is their greatest achievement.`},
+  {id:'vtm-generation',tags:['generation','thin blood','diablerie','blood pool','power','generation table','gen'],title:'Generation, Blood Pool & Diablerie',answer:`<strong>Generation</strong> measures steps from Caine. Lower = more powerful.<br><br>◆ 3rd–5th: Antediluvians and Methuselahs — mostly in torpor<br>◆ 6th–8th: Elders — potent and politically dominant<br>◆ 9th–11th: Most active Kindred / player character range<br>◆ 12th–13th: Neonates<br>◆ 14th–15th: <em>Thin-bloods</em> (Duskborn) — a sign of Gehenna<br><br>Lower Generation = larger Blood Pool maximum, more blood spendable per turn, higher Discipline power cap.<br><br><strong>Diablerie:</strong> Consuming another vampire's soul permanently lowers Generation by 1. The ultimate taboo — leaves black stains in the aura detectable by Auspex for years. Automatic Humanity check. The Camarilla punishes it with Final Death. The Sabbat practices it openly.`},
+  {id:'vtm-humanity',tags:['humanity','beast','frenzy','rotshreck','morality','path','degeneration','wassail','inner beast'],title:'Humanity, The Beast & Frenzy',answer:`<strong>Humanity</strong> (1–10) measures how much of the mortal self a Kindred has preserved. Higher = easier to pass as human, better daylight sleep, more Frenzy resistance.<br><br>At each Humanity rating a Hierarchy of Sins exists — committing them requires Degeneration checks. Failing costs one Humanity permanently. At 0: <em>wassail</em> — total Beast dominance, the vampire becomes a mindless monster.<br><br><strong>Frenzy:</strong> Triggered by hunger, provocation, fire, or sunlight. The Beast takes over — the vampire attacks indiscriminately. Resist with Willpower vs. Difficulty. <em>Rotshreck</em> (terror frenzy from fire/sunlight) is even harder to resist.<br><br><strong>Paths of Enlightenment</strong> replace Humanity for Sabbat vampires — alternative moral frameworks (Caine, Night, Cathari, Honorable Accord, etc.) that tame the Beast through inhuman logic rather than human virtue.`},
+  {id:'vtm-disciplines',tags:['disciplines','powers','supernatural','abilities','vampire powers','all disciplines','dominate','celerity','obfuscate'],title:'All Vampire Disciplines',answer:`◆ <strong>Animalism</strong> — commune with and control animals and the Beast within others<br>◆ <strong>Auspex</strong> — heightened senses, aura perception, telepathy, astral travel<br>◆ <strong>Celerity</strong> — supernatural speed; extra actions per turn<br>◆ <strong>Chimerstry</strong> — create illusions (Ravnos)<br>◆ <strong>Dementation</strong> — induce and spread madness (Malkavian)<br>◆ <strong>Dominate</strong> — eye-contact mind control; implant commands, erase memories<br>◆ <strong>Fortitude</strong> — supernatural toughness; soak fire and sunlight<br>◆ <strong>Necromancy</strong> — command the dead, manipulate Wraiths (Giovanni)<br>◆ <strong>Obfuscate</strong> — invisibility and blending<br>◆ <strong>Obtenebration</strong> — control living shadow (Lasombra)<br>◆ <strong>Potence</strong> — supernatural strength<br>◆ <strong>Presence</strong> — emotional manipulation; awe, terror, passion at a distance<br>◆ <strong>Protean</strong> — shapeshift; claws, mist, earth meld, wolf/bat (Gangrel)<br>◆ <strong>Quietus</strong> — blood control; silence, acid blood, death touch (Assamite)<br>◆ <strong>Serpentis</strong> — snake traits; forked tongue, cobra form (Setites)<br>◆ <strong>Thaumaturgy</strong> — ritual blood magic (Tremere exclusive)<br>◆ <strong>Vicissitude</strong> — reshape flesh and bone (Tzimisce)<br><br>Each Discipline has 5 standard levels plus Elder/Advanced powers beyond.`},
+  {id:'vtm-golconda',tags:['golconda','salvation','peace','inner peace','beast tamed','transcend','myth','redemption','enlightenment'],title:'Golconda — The Mythical Salvation',answer:`<strong>Golconda</strong> is the Kindred equivalent of Buddhist enlightenment — a mythical state of inner peace in which the Beast is not destroyed but truly tamed. A vampire who achieves Golconda no longer frenzies, no longer loses Humanity, feeds minimally, and exists in genuine tranquility despite their undead nature.<br><br>Whether Golconda is real is one of V20's great open questions. A handful of Kindred credibly claim to have achieved it. The process always involves a deeply personal spiritual journey, often guided by a mentor. The Camarilla officially acknowledges it as possible but rare. The Sabbat considers it a lie told to keep Cainites docile.`},
+  {id:'vtm-bloodlines',tags:['bloodlines','salubri','cappadocian','baali','daughters','samedi','harbingers','minor clans','lost clans'],title:'Bloodlines & Lost Clans',answer:`◆ <strong>Salubri</strong> — Healers with a third eye. Hunted to near-extinction by Tremere (who diableried Saulot). A Warrior sub-lineage survives in the Sabbat.<br>◆ <strong>Cappadocians</strong> — Death-scholars largely consumed by the Giovanni who rose from within them.<br>◆ <strong>Harbingers of Skulls</strong> — Cappadocian survivors returned from the Shadowlands, hideously scarred, seeking revenge on the Giovanni.<br>◆ <strong>Baali</strong> — Demon-worshippers. Universally despised. Even the Sabbat destroys them.<br>◆ <strong>Daughters of Cacophony</strong> — Supernatural singers whose songs can shatter sanity.<br>◆ <strong>Samedi</strong> — Zombie-aesthetic permanently rotting vampires. Associated with Voodoo.<br>◆ <strong>True Brujah</strong> — Claim descent from the true Troile. Masters of Temporis (time manipulation).<br>◆ <strong>Tremere antitribu</strong> — Sabbat Tremere faction, destroyed by mass curse from Vienna in Revised metaplot.`},
+  {id:'wta-overview',tags:['werewolf','apocalypse','wta','overview','garou','gaia','what is werewolf','garou nation'],title:'What is Werewolf: The Apocalypse?',answer:`<strong>Werewolf: The Apocalypse</strong> (1992) is a game of savage war and heroic sacrifice. Players are the <strong>Garou</strong> — warriors born from wolf and human lineage, gifted with shapeshifting and access to the spirit world (the Umbra). Their sacred mission: protect <strong>Gaia</strong> from the <strong>Wyrm</strong> — the cosmic force of corruption.<br><br>The Apocalypse is coming. The Garou are losing. Caerns fall. The Wyrm's agents advance. But the Garou fight on. The signature emotion of Werewolf is <strong>Rage</strong> — supernatural fury that empowers in combat but isolates from both humans and the spirit world.<br><br>The <strong>W20</strong> (20th Anniversary Edition, 2012) is the definitive version.`},
+  {id:'wta-triat',tags:['triat','wyld','weaver','wyrm','triatic','three','cosmic','entropy','creation','order','balance','cosmology'],title:'The Triat — Wyld, Weaver & Wyrm',answer:`The <strong>Triat</strong> is the metaphysical foundation of Werewolf — three cosmic forces that together sustain existence, but in the World of Darkness are catastrophically fractured:<br><br>◆ <strong>The Wyld</strong> — Primordial creation, chaos, infinite potential. Out of balance: formless madness. Its realm is the deep, primal Umbral wilderness.<br><br>◆ <strong>The Weaver</strong> — Order, pattern, structure. Now catastrophically broken — obsessively crystallising everything into unchanging static Pattern. Modern technology, bureaucracy, and rationalism are her expressions. She imprisoned the Wyrm in her Pattern Web, breaking the balance of all things. The Gauntlet thickens because of her.<br><br>◆ <strong>The Wyrm</strong> — Originally entropy and sacred transformation. Now insane — imprisoned by the Weaver and driven mad. No longer transforms but corrupts, poisons, and devours. Physical agents: Pentex Corporation, Banes, and the Black Spiral Dancers.`},
+  {id:'wta-auspices',tags:['auspice','auspices','five auspices','ragabash','theurge','philodox','galliard','ahroun','moon','lunar'],title:'The Five Auspices — Lunar Births',answer:`◆ <strong>Ragabash</strong> (New Moon) — The Trickster. Scout, questioner, mocker of complacency. Lowest starting Rage. Gifts: stealth, deception, social subversion.<br>◆ <strong>Theurge</strong> (Crescent Moon) — Spirit-Worker. Shaman, spirit-speaker, keeper of Rites. Mediates between warriors and the Umbra. Highest Gnosis.<br>◆ <strong>Philodox</strong> (Half Moon) — The Judge. Arbitrates Garou law, mediates conflict, preserves the Litany. The backbone of sept governance.<br>◆ <strong>Galliard</strong> (Gibbous Moon) — Storyteller and Lorekeeper. Preserves Garou history through song and howl. Inspires in battle.<br>◆ <strong>Ahroun</strong> (Full Moon) — The Warrior. Maximum starting Rage. Born to lead the charge. Highest combat potential. Most likely to frenzy.`},
+  {id:'wta-13tribes',tags:['tribes','13 tribes','garou tribes','all tribes','tribe list','werewolf tribes','nation'],title:'The Thirteen Garou Tribes',answer:`◆ <strong>Black Furies</strong> — Predominantly female warriors. Protect wild places. Patron: Pegasus.<br>◆ <strong>Bone Gnawers</strong> — Urban survivors. Scorned by all, know everything. Patron: Rat.<br>◆ <strong>Children of Gaia</strong> — Diplomats and healers. Believe internal peace is essential. Patron: Unicorn.<br>◆ <strong>Fianna</strong> — Celtic warriors, poets, drinkers. Patron: Stag.<br>◆ <strong>Get of Fenris</strong> — Norse warriors. Strength above all. Patron: Fenrir. (Sword of Heimdall sub-faction is violently racist.)<br>◆ <strong>Glass Walkers</strong> — Urban tech-wolves. Work within corporate systems. Patron: City Fathers.<br>◆ <strong>Red Talons</strong> — All born wolves. Hostile to humanity. Patron: Griffin. Advocate human extinction.<br>◆ <strong>Shadow Lords</strong> — Machiavellian Eastern European nobles. Patron: Grandfather Thunder.<br>◆ <strong>Silent Striders</strong> — Nomadic exiles cursed by vampire Sutekh. Lorekeepers. Patron: Owl.<br>◆ <strong>Silver Fangs</strong> — Hereditary rulers. Noble but afflicted with deepening hereditary madness. Patron: Falcon.<br>◆ <strong>Stargazers</strong> — Buddhist warrior-monks. Left the Nation for the Hengeyokai in W20. Patron: Chimera.<br>◆ <strong>Uktena</strong> — Native American secret-keepers. Guard dangerous lore. Patron: Uktena.<br>◆ <strong>Wendigo</strong> — Most traditionalist Pure Tribe. Hostile to European contamination. Patron: Wendigo.`},
+  {id:'wta-forms',tags:['forms','five forms','homid','glabro','crinos','hispo','lupus','shapeshifting','delirium','war form'],title:'The Five Forms of the Garou',answer:`◆ <strong>Homid</strong> — Full human. No Attribute modifiers. Most socially functional.<br>◆ <strong>Glabro</strong> — Near-human. Str +2, Sta +2, Man –1, App –1.<br>◆ <strong>Crinos</strong> — War Form. 8–9 feet of muscle, fur, and claw. Str +4, Dex +1, Sta +3, Man –3, App 0. Triggers the <em>Delirium</em> in mortals — species-level instinctive terror. Claws and bite: Aggravated damage. Silver: Aggravated damage.<br>◆ <strong>Hispo</strong> — Dire wolf. Str +3, Dex +2, Sta +3. Exceptional speed and ferocity.<br>◆ <strong>Lupus</strong> — Full wolf. Str +1, Dex +2, Sta +2. Enhanced senses, stealth, sustained speed.<br><br><strong>The Delirium:</strong> Mortals who witness Crinos form are flooded with primal terror — most forget within minutes, their minds protecting themselves from an impossible truth.`},
+  {id:'wta-litany',tags:['litany','garou law','laws','rules','nation law','sacred law','garou rules'],title:'The Litany — Sacred Laws of the Garou',answer:`The <strong>Litany</strong> governs the Garou Nation. Violations judged by Philodox. Serious violations = exile (Ronin), punishment, or death:<br><br>① <strong>Garou Shall Not Mate With Garou</strong> — offspring are deformed, sterile <em>Metis</em>.<br>② <strong>Combat the Wyrm Wherever It Dwells</strong> — the sacred duty above all others.<br>③ <strong>Respect the Territory of Another</strong> — do not trespass on another sept's Caern without permission.<br>④ <strong>Accept an Honourable Surrender</strong> — Garou who yield in fair combat must be allowed to live.<br>⑤ <strong>Submit to Those of Higher Station</strong> — Rank commands obedience. Challenge through formal Rite of Challenge.<br>⑥ <strong>The First Share of the Kill for the Greatest in Station</strong> — Renown earns resource priority.<br>⑦ <strong>Do Not Eat the Flesh of Humans</strong> — forbidden.<br>⑧ <strong>The Leader's Word Is Law in Times of War</strong> — battlefield authority is absolute.`},
+  {id:'wta-umbra',tags:['umbra','spirit world','gauntlet','penumbra','middle umbra','deep umbra','realm','caern','stepping sideways','spirits'],title:'The Umbra — The Spirit World',answer:`Garou enter the Umbra by "stepping sideways" — crossing the <strong>Gauntlet</strong> with a Gnosis roll. Gauntlet rating (lower = easier): 3 at a powerful Caern, 9 at airports or corporate HQs.<br><br><strong>Umbral Regions:</strong><br>◆ <em>Penumbra</em> — Spirit reflection of the physical world. Familiar but distorted.<br>◆ <em>Middle Umbra</em> — Distinct Realms: Battleground, Wolfhome, Digital Web, Atrocity Realm, Aetherial Realm (Weaver territory).<br>◆ <em>Low Umbra / Shadowlands</em> — Realm of death. Wraiths exist here. Accessible via Necromancy.<br>◆ <em>Deep Umbra</em> — Beyond the Membrane. Alien. Where things live that are not spirits in any recognisable sense.<br><br><strong>Caerns</strong> are sacred sites where the Gauntlet is minimal and Gnosis flows freely. Each has a type (War, Wisdom, Healing) and totem spirit. Defending Caerns is the central Garou duty.`},
+  {id:'wta-fera',tags:['fera','other breeds','bastet','corax','gurahl','mokole','nagah','nuwisha','ratkin','rokea','ananasi','changing breeds'],title:'The Fera — Other Changing Breeds',answer:`Beyond the Garou, other shapeshifting breeds serve Gaia — most decimated by the War of Rage:<br><br>◆ <strong>Bastet</strong> (werecats) — Nine cat tribes. Secret-keepers and independent hunters.<br>◆ <strong>Corax</strong> (wereravens) — Scouts of Helios. "See everything, know everything, sell everything."<br>◆ <strong>Gurahl</strong> (werebears) — Healers. Nearly destroyed by Garou. Extraordinary healing Gifts.<br>◆ <strong>Mokole</strong> (werecrocodilians) — "Memory of Gaia." Living libraries with eidetic recall to the dinosaur age.<br>◆ <strong>Nagah</strong> (weresnakes) — Secret assassins. Keep their existence hidden from virtually everyone.<br>◆ <strong>Nuwisha</strong> (werecoyotes) — Tricksters serving Coyote. Long gambits most cannot foresee.<br>◆ <strong>Ratkin</strong> (wererats) — Bitter enemies of Garou. Urban vermin-warriors.<br>◆ <strong>Rokea</strong> (weresharks) — Ocean guardians. Ancient, alien, rarely involved with land affairs.<br>◆ <strong>Ananasi</strong> (werespiders) — Serve the Weaver, not Gaia. Multi-form. Alien agenda.`},
+  {id:'wta-pentex',tags:['pentex','corporation','wyrm','banes','corruption','black spiral dancers','enemies','wyrm agents','spiral'],title:'Pentex & The Wyrm\'s Agents',answer:`<strong>Pentex Corporation</strong> is the Wyrm's primary physical agent — a global megacorporation spreading corruption through: Endron International (oil/chemicals), Magadon Inc. (food/pharma), Herrick's (alcohol/addiction), and entertainment subsidiaries that numb the human spirit. The Board includes mortal puppets, Fomori (humans possessed by Banes), and actual Wyrm-entities in disguise.<br><br><strong>Black Spiral Dancers</strong> — Garou captured and forced to walk the corrupted <em>Black Spiral</em> Caern. They retain their intelligence, powers, and all their knowledge — but are now fully devoted to entropy. The most personal of all Garou enemies. They fight with everything Garou do, and have lost everything that made it meaningful.<br><br><strong>Banes</strong> — Corrupt spirits serving the Wyrm. Range from minor spirits of pollution and despair to powerful Chromatics and Nexus Crawlers of enormous destructive capacity.`},
+  {id:'mta-overview',tags:['mage','ascension','mta','overview','awakened','magic','what is mage','reality','paradigm'],title:'What is Mage: The Ascension?',answer:`<strong>Mage: The Ascension</strong> (1993) is a game of cosmic ambition and philosophical war. Players are the <strong>Awakened</strong> — mages whose Will has shattered the shackles of consensus reality, able to reshape the world through <em>magick</em>. But the universe pushes back in the form of <strong>Paradox</strong>.<br><br>The central conflict: <em>who gets to decide what is real?</em> The Nine Mystick Traditions believe in a diverse, mystical universe. The <strong>Technocratic Union</strong> believes in a safe, ordered, scientifically managed consensus — and through five centuries of work, they have largely won. The Traditions fight a rearguard action from hidden Chantries.<br><br>Mage is unique in that there are no fixed "right answers." The Technocracy is not simply evil. The Traditions are not simply good. Both have caused tremendous harm. Both claim to act for humanity. The <strong>M20</strong> (20th Anniversary Edition, 2015, 700+ pages) is the definitive version.`},
+  {id:'mta-spheres',tags:['spheres','nine spheres','correspondence','entropy','forces','life','matter','mind','prime','spirit sphere','time','magic spheres'],title:'The Nine Spheres of Magick',answer:`◆ <strong>Correspondence</strong> — Space, distance, teleportation, wards, remote sensing<br>◆ <strong>Entropy</strong> — Chaos, fate, luck, decay, unravelling of patterns<br>◆ <strong>Forces</strong> — Fire, electricity, gravity, kinetic force, light, radiation<br>◆ <strong>Life</strong> — Biology, healing, transformation of living matter<br>◆ <strong>Matter</strong> — Physical substances, alchemy, transmutation of objects<br>◆ <strong>Mind</strong> — Telepathy, illusion, memory manipulation, dream-walking<br>◆ <strong>Prime</strong> — Quintessence (raw magical energy). Required for creating permanent magical effects. The "master Sphere."<br>◆ <strong>Spirit</strong> — The Umbra, spirits, the Gauntlet, crossing between worlds<br>◆ <strong>Time</strong> — Temporal perception, prophecy, time manipulation<br><br><strong>Combination effects:</strong> Most powerful magic combines multiple Spheres (e.g. Correspondence + Forces = teleport fire; Life + Mind = emotional surgery). Each component requires a minimum Sphere rating.`},
+  {id:'mta-paradox',tags:['paradox','backlash','consensus','sleepers','vulgar','coincidental','paradox spirits','immune','backlash'],title:'Paradox — The Universe\'s Immune Response',answer:`<strong>Paradox</strong> is what happens when a mage performs <em>vulgar magick</em> — magic that openly defies consensus reality — especially in front of <em>Sleepers</em> (non-Awakened mortals). Their disbelief actively fuels the Consensus which reacts to violations.<br><br><strong>Coincidental vs. Vulgar:</strong> Magic that looks natural (a wound heals fast, a car conveniently starts) = coincidental = no Paradox. Magic that is obviously impossible (fireball, levitation in public) = vulgar = Paradox accumulates.<br><br><strong>Effects by accumulation:</strong><br>◆ 1–5: Botch additions, minor flaws<br>◆ 6–10: Paradox Flaws (permanent pattern damage — a stutter, bad luck, strange glow)<br>◆ 11–15: Paradox Spirits attack the mage<br>◆ 16–20: Paradox Backlash — explosive reality disaster<br>◆ 21+: Paradox Realm imprisonment in a pocket dimension of their own worst nightmare`},
+  {id:'mta-traditions',tags:['traditions','nine traditions','akashic','celestial chorus','cult of ecstasy','dreamspeakers','euthanatos','hermes','sons of ether','verbena','virtual adepts','council'],title:'The Nine Mystick Traditions',answer:`◆ <strong>Akashic Brotherhood</strong> — Eastern martial artists. Magick = Do (physical discipline as metaphysical mastery).<br>◆ <strong>Celestial Chorus</strong> — Unified-faith mystics. All religions worship facets of one divine truth. Power through prayer and song.<br>◆ <strong>Cult of Ecstasy</strong> — Sensation and altered states as enlightenment. Drugs, music, extremity.<br>◆ <strong>Dreamspeakers</strong> — Indigenous shamans worldwide. Marginalized within Traditions but hold deep Umbral knowledge.<br>◆ <strong>Euthanatos</strong> — Death mages. Death as sacred transformation. Misunderstood assassin-healers.<br>◆ <strong>Order of Hermes</strong> — Classical European high magic from Alexandria. Formal and theoretical. Tremere's origin.<br>◆ <strong>Sons of Ether</strong> — Mad science! Aether, phlogiston, steam-punk engineering — discarded paradigms that still work via belief.<br>◆ <strong>Verbena</strong> — Blood witches, hedge mages, pagans. Power through life-force, blood, primal cycles.<br>◆ <strong>Virtual Adepts</strong> — Hackers who defected from the Technocracy. Code as magic. Digital space as mystical frontier.<br><br>Plus the <strong>Hollow Ones</strong> — occult punks and goths, too unorganised to be a proper Tradition but tolerated.`},
+  {id:'mta-technocracy',tags:['technocracy','technocratic union','iteration x','new world order','progenitors','syndicate','void engineers','convention','men in black'],title:'The Technocratic Union — Five Conventions',answer:`The Technocracy has spent five centuries building a consensus reality based on rational science — eliminating the worst supernatural predation of the pre-modern age. They genuinely believe they protect humanity. They are also deeply authoritarian.<br><br>◆ <strong>Iteration X</strong> — Transhumanist cyborg engineers. HIT Marks (combat robots), temporal mechanics. The body is hardware to upgrade.<br>◆ <strong>New World Order</strong> — Social engineering and surveillance. Control through information, media, politics, and psychological manipulation. The "Men in Black" are NWO field agents.<br>◆ <strong>Progenitors</strong> — Biological sciences. Genetic engineering, pharmaceuticals, Deviant Constructs (bioengineered soldiers). Do not ask about failed experiments.<br>◆ <strong>Syndicate</strong> — Global economic control. Finance and psychological economics as reality-shaping tools.<br>◆ <strong>Void Engineers</strong> — Space and interdimensional exploration. Now returning from the Deep Umbra with stories of what lives out there — and it is not friendly.`},
+  {id:'mta-nephandi',tags:['nephandi','marauders','oracles','antagonists','mage enemies','corruption','inverted','void','oblivion'],title:'Nephandi, Marauders & Oracles',answer:`<strong>Nephandi</strong> — Mages whose Avatars have been inverted. They serve the Wyrm, alien Outer Lords in the Deep Umbra, or pure Oblivion. Goal: the dissolution of all existence. Both Traditions and Technocracy agree they must be destroyed — and rarely cooperate effectively enough to do it.<br><br><strong>Marauders</strong> — Awakened mages driven entirely mad. Their Avatars have shattered. They continuously and unconsciously rewrite reality around themselves. Not malevolent — catastrophically insane. Encounters are reality-bending disasters that leave permanent scars on local Consensus.<br><br><strong>Oracles</strong> — Mages who have achieved Ascension. Transcendent beings of near-omnipotent will. No longer inhabit the physical world normally. Appear only cryptically, apparently unwilling to directly intervene. Why they hold back is one of Mage's great mysteries.`},
+  {id:'mta-awakening',tags:['awakening','avatar','arete','paradigm','ascension','enlightenment','mage awakening','how mage'],title:'Awakening, Avatar & Arete',answer:`Every human carries an <strong>Avatar</strong> — a higher spiritual self. Mages are those whose Avatar has burned through the mortal shell in the <strong>Awakening</strong>: a shattering, irreversible revelation that reality is malleable and subject to Will. Always deeply personal. Always different. Cannot be undone.<br><br>The mage's <strong>Paradigm</strong> — their personal cosmology defining how their magic works — is shaped at the moment of Awakening. A priest's magic looks like miracles. A martial artist's looks like chi. A hacker's looks like exploiting system bugs in reality.<br><br><strong>Arete</strong> (1–10) — The mage's overall enlightened will. Determines the dice pool for all magical actions. Advancing Arete requires profound experiences and meaningful sacrifice — it cannot simply be purchased with experience points.<br><br><strong>Avatar Types:</strong> Dynamic (change), Pattern (structure), Primordial (dissolution). Type influences magical style and philosophical orientation.`},
+  {id:'htr-overview',tags:['hunter','reckoning','htr','imbued','overview','what is hunter','vigil','messengers'],title:'What is Hunter: The Reckoning?',answer:`<strong>Hunter: The Reckoning</strong> (1999) is set in the same world as Vampire, Werewolf, and Mage — but players are <em>ordinary humans</em> who witness something impossible and, instead of going mad or forgetting, are <strong>Imbued</strong> by mysterious entities called the <em>Messengers</em>.<br><br>The Imbuing grants supernatural perception and <em>Edges</em> (powers based on Creed). The trade: you can never un-see the world. You've been drafted into a war you didn't choose, against creatures far older and stronger, with no support structure and cryptic guidance at best.<br><br>Hunter's genius: it shows the World of Darkness from outside the supernatural. Vampires, werewolves, and mages are terrifying and nearly incomprehensible when you're a mortal encountering them on their terms.`},
+  {id:'htr-creeds',tags:['creeds','hunter creeds','avenger','defender','innocent','judge','martyr','redeemer','wayward','creed','edges'],title:'Hunter Creeds & Edges',answer:`A hunter's <strong>Creed</strong> reflects their emotional response to the Imbuing and determines Edge access:<br><br>◆ <strong>Avenger</strong> (Zeal) — Motivated by loss and rage. Hunt to destroy. Danger: become as monstrous as what you hunt.<br>◆ <strong>Defender</strong> (Mercy) — Protect the innocent. Power manifests as shielding. Endure what others cannot.<br>◆ <strong>Innocent</strong> (Vision) — Recently imbued, still questioning. See clearly but don't always understand.<br>◆ <strong>Judge</strong> (Conviction) — Apply justice systematically. Determine which monsters can be redeemed and which must die.<br>◆ <strong>Martyr</strong> (Sacrifice) — Believe their suffering powers their purpose. Most dangerous and most tragic Creed.<br>◆ <strong>Redeemer</strong> (Redemption) — Believe monsters can be saved. Often naive. Occasionally right.<br>◆ <strong>Wayward</strong> (Destruction) — Not a Creed — a fate. Hunters who become indiscriminate killers.<br><br><strong>Edges</strong> are the supernatural powers granted by the Messengers, rated 1–5. Range from perceiving the supernatural to actively harming monsters to protecting bystanders.`},
+  {id:'htr-messengers',tags:['messengers','imbuing','angels','who messengers','divine','hunter origin','why imbued'],title:'The Messengers — Who Imbues the Hunters?',answer:`The <strong>Messengers'</strong> true nature is one of Hunter's great deliberately unresolved mysteries. They communicate only through visions, compulsions, and the powers they grant. Multiple interpretations are supported by canon:<br><br>◆ <strong>Angels / Divine Emissaries</strong> — Acting on God's behalf as divine justice against supernatural predators.<br>◆ <strong>Ancient Human Spirits</strong> — Humanity's collective spiritual self generating defenders through urgent need.<br>◆ <strong>The Collective Unconscious</strong> — Not beings at all but the psychic gestalt of all humanity manifesting protectors.<br>◆ <strong>Something Genuinely Alien</strong> — Entities outside known WoD cosmological categories entirely.<br><br>What the game makes clear: the Messengers cannot (or will not) directly intervene. They appear to be experimenting. Hunters are their instrument. Instruments are expendable.`},
+  {id:'cos-cosmology',tags:['cosmology','tellurian','shared','all games','universe','world','reality','tapestry','quintessence','gnosis'],title:'The Shared WoD Cosmology — The Tellurian',answer:`All WoD game lines share one cosmological framework:<br><br><strong>The Tellurian</strong> — the sum total of all existence: the physical world, all spirit dimensions, the Underworld, the Dreaming, and everything between. In Mage cosmology, the Tapestry — all Patterns woven into the fabric of reality.<br><br><strong>The Physical World</strong> — The material universe. Mortals experience only this layer. Their collective Sleeper disbelief maintains the Consensus and resists supernatural violation (Paradox).<br><br><strong>The Gauntlet</strong> — Barrier between physical and spiritual. Thickness varies: weakest at Caerns and wild places, thickest in hyper-urban technological environments.<br><br><strong>The Umbra</strong> — The spirit world. Accessible to Garou (stepping sideways), Mages (Spirit Sphere), and others.<br><br><strong>The Shadowlands</strong> — Realm of death (Wraith's setting). A decaying reflection of the physical world, populated by ghosts.<br><br><strong>The Dreaming</strong> — Changeling's realm. Pure imagination and faerie. Nourished by human creativity; dying as materialism starves it.`},
+  {id:'cos-crossover',tags:['crossover','tremere origin','garou vampire','mage werewolf','shared','crossover lore','samuel haight'],title:'How the Game Lines Interact — Crossover Lore',answer:`<strong>The Tremere Problem:</strong> Tremere himself was founder of the Order of Hermes' House Tremere — a real mage. Seeking immortality, his Order diableried the Salubri Antediluvian Saulot, transforming themselves into vampires. This crime against both supernatural orders defines Tremere's place in WoD: universally despised, politically powerful, uniquely vulnerable to anyone with a grudge from either side.<br><br><strong>Garou vs. Kindred:</strong> Fundamentally incompatible. Vampires register as Wyrm-tainted to Garou spiritual senses. Most Garou kill vampires on sight. Vampires find werewolves extravagantly dangerous. Cooperation against greater threats happens but trust never comes easily.<br><br><strong>Samuel Haight</strong> — The most notorious crossover character. A Kinfolk who stole Garou skins to become a werewolf, became a Ghoul and independent mage. White Wolf killed him and had his soul soulforged into an ashtray in the Underworld — a cautionary tale about crossover power-creep.`},
+  {id:'cos-timeline',tags:['timeline','history','events','chronology','wod history','week of nightmares','reckoning','order of events'],title:'WoD Master Timeline',answer:`◆ <em>Prehistoric</em> — Gaia creates the Garou. The Impergium begins. The War of Rage decimates the Fera. The Croatan sacrifice themselves.<br>◆ <em>Mythic Past</em> — Caine kills Abel, becomes the First Vampire. The First City rises and falls in the Flood. The Antediluvians begin their eternal sleep.<br>◆ <em>~1000 CE</em> — House Tremere diablerises Saulot, becoming vampires.<br>◆ <em>1230 CE</em> — Dark Ages setting. Cappadocians and Salubri still active.<br>◆ <em>1486</em> — The Camarilla founded. The Masquerade established.<br>◆ <em>1493</em> — The Sorcerers Crusade. The Ascension War formally begins.<br>◆ <em>1881</em> — Werewolf: The Wild West setting. Pure Tribes' last stands.<br>◆ <em>1886</em> — Victorian Age Vampire setting. London.<br>◆ <em>1997</em> — The Reckoning. Nephandi destroy Horizon. Mage's turning point.<br>◆ <em>1999</em> — The Week of Nightmares. Ravnos Antediluvian briefly wakes. Clan Ravnos nearly annihilated.<br>◆ <em>2006</em> — Hunter: The Parenting setting (Norfolk, UK).<br>◆ <em>"The Now"</em> — V20/W20/M20 present. Gehenna looms. The fight continues.`},
+  {id:'da-overview',tags:['dark ages','dark ages vampire','medieval','historical','1230','roads','high clan','low clan','dark ages setting'],title:'Dark Ages: Vampire — The Medieval Setting',answer:`<strong>Dark Ages: Vampire</strong> (originally 1996, revised 2002) is set in <strong>1230 CE</strong> — medieval Europe at the height of feudal splendour. Before the full Masquerade, Kindred interacted far more openly with the world: feudal lords, court advisors, Church patrons.<br><br><strong>High Clans</strong> (prestigious): Brujah (scholar-lords), Cappadocian, Gangrel, Lasombra, Toreador (Troubadours), Tremere (new), Tzimisce, Ventrue.<br><strong>Low Clans</strong> (marginalised): Assamites, Followers of Set, Giovanni (rising), Malkavian, Nosferatu, Ravnos, <em>Salubri</em> (still alive — Tremere hasn't finished the genocide yet).<br><br><strong>Roads</strong> replace modern Paths of Enlightenment — more communal and culturally embedded: Road of Heaven, Road of the Beast, Road of Bones, Road of Sin, Road of Kings.`},
+  {id:'da-historical',tags:['dark ages werewolf','wild west','sorcerers crusade','victorian','historical settings','mage sorcerers'],title:'Other Historical Settings',answer:`<strong>Werewolf: The Dark Ages (1996)</strong> — 1230 CE. The Gauntlet is thinner, Caerns more numerous. The Apocalypse is a distant prophecy. The Croatan still exist. A higher-water mark for Garou power.<br><br><strong>Werewolf: The Wild West (1997)</strong> — 1881 post-Civil War America. Pure Tribes face European Garou as westward expansion destroys sacred lands. A setting of grief, displacement, and last stands.<br><br><strong>Mage: The Sorcerers Crusade (1998)</strong> — 1493. The Renaissance. The Order of Reason formally challenges the Traditions. Columbus's voyage begins the assault on New World magical traditions. Uses Houses and different mechanics for the pre-Tradition-unification era.<br><br><strong>Victorian Age: Vampire (2002)</strong> — 1886 London. Gaslit gothic. Kindred navigate industrialisation and the Technocratic advance while maintaining the Masquerade through fog and propriety.<br><br><strong>Dark Ages: Inquisitor</strong> — Mortal inquisitors with True Faith hunting the supernatural. Reveals not all Inquisitors were wrong — some were fighting real monsters with real divine power, and winning.`},
+  {id:'fp-htp',tags:['hunter the parenting','parenting','alfabusa','bruva','ogre popennang','big-d','marckus','kevin','norfolk uk','animated','fan','htp','tremere kevin','mr smerples'],title:'Hunter: The Parenting — Complete Guide',answer:`<strong>Hunter: The Parenting</strong> is a fan-animated WoD series by <strong>Bruva Alfabusa</strong> (Ogre Popennang Productions), created under Paradox Interactive's Dark Pack Agreement. Spiritual successor to the WH40K fan series <em>If the Emperor Had a Text-to-Speech Device</em>, after Games Workshop's 2021 zero-tolerance policy ended that project.<br><br><strong>Setting:</strong> Norfolk, UK. Latter half of 2006. A Camarilla vampire clan has moved into Norfolk.<br><br><strong>Main Characters:</strong><br>◆ <strong>Big-D</strong> — Veteran Imbued Hunter. Wildly eccentric, deeply experienced, highly secretive. Decades of monster-hunting experience.<br>◆ <strong>Marckus</strong> — Big-D's son. Reckless, capable. Contains callbacks to Magnus the Red from TTS (deliberate).<br>◆ <strong>Kitten</strong> — Marckus's fiancée. Studious and methodical.<br>◆ <strong>Door</strong> — Big-D's reliable partner. Inflexible and traditional.<br>◆ <strong>Boy</strong> — Door's son. The audience's perpetual terror-surrogate.<br>◆ <strong>Kevin (Herbertus)</strong> — Tremere vampire. Former accountant. Embraced and enslaved as the Regent's financial manager, then abandoned for correctly noting that mind-controlled employees who starve to death attract tax investigations. Assists the hunters for protection. Has a cat: <em>Mr. Smerples</em>.<br><br><strong>Format:</strong> Animated episodes + audio dramas between them. First episode: <strong>December 18, 2021</strong>. Planned: 15 animated episodes total.<br><br><strong>Antagonists:</strong> The Prince of Norfolk (6th-gen Ventrue, obsessed with Boudica and the Iron Age Iceni), the Regent of Great Yarmouth. Black Shuck (lupus-born Garou with real Norfolk folkloric roots) also features.<br><br><strong>WoD Accuracy:</strong> Remarkably accurate. Correct Camarilla political structures, Tremere clan dynamics, and HtR mechanics throughout.`},
+  {id:'fp-nwg',tags:['norfolk wizard game','wizard game','podcast','mage actual play','speakerd','virginia','bill morgan','parker','mage podcast','norfolk virginia'],title:'Norfolk Wizard Game — The Mage Podcast',answer:`<strong>Norfolk Wizard Game</strong> is a <em>Mage: The Ascension</em> actual-play podcast by the same Ogre Popennang Productions team, set in the <strong>same WoD continuity as Hunter: The Parenting</strong> — but in <strong>Norfolk, Virginia</strong> (the naming deliberately parallels UK Norfolk).<br><br><strong>Storyteller:</strong> SpeakerD — also HTP's writer. <strong>Available on:</strong> Spotify, from September 2023.<br><br>Each player character was introduced through their own individual "Awakening" episode — personal accounts of how each mage discovered their power, appropriate to Mage's core ethos.<br><br><strong>The Mages:</strong><br>◆ <strong>Bill Morgan</strong> — Blue-collar journalist. Awakening: the Great Dismal Swamp.<br>◆ <strong>Parker Knickerbocker</strong> — Archaeologist running his father's antique store. Awakening triggered by an eccentric customer, discovering "a clandestine cruelty."<br>◆ An artist whose gallery showing is destroyed by supernatural darkness.<br>◆ A fourth mage (Awakening episode on Spotify).<br><br>Explicitly set in the same continuity as HTP — future crossover possibilities between Norfolk UK hunters and Norfolk Virginia mages.`},
+  {id:'fp-darkpack',tags:['dark pack','dark pack agreement','paradox','fan content','fan projects','license','allowed','legal','paradox interactive'],title:'The Dark Pack Agreement',answer:`The <strong>Dark Pack Agreement</strong> is Paradox Interactive's fan content policy for World of Darkness — a deliberately generous framework that <em>encourages</em> fan creativity rather than suppressing it.<br><br><strong>What it allows:</strong> Non-commercial fan animations, audio dramas, actual-play podcasts, fan fiction, and artwork set in the WoD universe — without individual licensing fees, provided creators follow the guidelines.<br><br><strong>Key restrictions:</strong> No commercial exploitation of the IP directly. Content must not harmfully misrepresent the setting's themes. Must include the Dark Pack disclaimer acknowledging Paradox's IP ownership.<br><br><strong>Why it matters:</strong> This directly contrasts with Games Workshop's zero-tolerance policy that ended WH40K fan animation (including Alfabusa's TTS). Paradox has actively promoted projects like HTP on official social media — treating fan creators as community ambassadors.<br><br>Alfabusa has cited the Dark Pack Agreement explicitly as a primary reason for choosing World of Darkness: not just narrative fit, but that Paradox actively <em>wanted</em> his team's creativity in their universe.`},
+  {id:'rules-storyteller',tags:['storyteller system','dice','d10','rules','mechanics','how to play','dice pool','difficulty','success','botch','core system'],title:'The Storyteller System — Core Mechanics',answer:`All Classic WoD games use the <strong>Storyteller System</strong>, a dice pool mechanic on d10s:<br><br>① Determine relevant Attribute (1–5) + Ability (0–5) → your dice pool<br>② Storyteller sets a Difficulty (usually 6, range 3–10)<br>③ Roll all dice. Every die ≥ Difficulty = one success. 1s subtract successes.<br>④ One success = task accomplished. More = better.<br>⑤ <strong>Botch:</strong> More 1s than successes (net negative) = catastrophic failure<br><br><strong>Attributes:</strong> Physical (Strength, Dexterity, Stamina), Social (Charisma, Manipulation, Appearance), Mental (Perception, Intelligence, Wits)<br><br><strong>Abilities:</strong> Talents (instinctive) · Skills (trained) · Knowledges (academic)<br><br><strong>Willpower</strong> (1–10): Spend 1 point to automatically succeed at a single roll (max 5 successes).<br><br><strong>Damage types:</strong> Bashing (blunt — anyone can soak) · Lethal (blades/bullets — supernatural soak required) · Aggravated (fire, magic, silver — requires Fortitude or specific powers to soak)`},
+  {id:'rules-chargen',tags:['character creation','chargen','create character','attributes','backgrounds','build','how to make','new character','freebie points'],title:'Character Creation Overview',answer:`<strong>Classic WoD Character Creation:</strong><br><br>① <strong>Concept:</strong> Who is this person? Nature (inner self), Demeanour (public face), supernatural type/clan/tribe/tradition.<br>② <strong>Attributes:</strong> Prioritise Primary (7 pts) / Secondary (5 pts) / Tertiary (3 pts) across Physical, Social, Mental. All start at 1.<br>③ <strong>Abilities:</strong> Same priority system (13/9/5 pts) across Talents, Skills, Knowledges. Start at 0; max 3 at creation.<br>④ <strong>Advantages:</strong> Supernatural powers, Backgrounds, game-line specific traits.<br>⑤ <strong>Finishing:</strong> Humanity usually 7, Willpower from Virtues, <strong>15 Freebie Points</strong> to spend on anything.<br><br><strong>Freebie Point Costs:</strong> Attribute=5 · Ability=2 · Discipline/Gift/Sphere=7 · Background=1 · Virtue=2 · Humanity=1 · Willpower=1<br><br><strong>Experience Costs:</strong> Attribute = current×4 · Ability = current×2 · In-Clan Discipline = current×5 · Out-of-Clan = current×7 · Mage Sphere = current×7 (affinity ×6) · Willpower = current rating · Virtue = current×2`},
+  {id:'rules-editions',tags:['editions','v20 vs v5','20th vs revised','what edition','differences','edition differences','which edition','v1 v2 v3','5th edition'],title:'WoD Editions — What\'s the Difference?',answer:`<strong>Classic WoD Edition History:</strong><br><br>◆ <strong>1st Edition (1991–94):</strong> Raw and creatively vibrant. Inconsistent rules. Dark metaplot just beginning.<br>◆ <strong>2nd Edition (1992–96):</strong> Cleaned-up rules. More consistent. Many players' starting point. Expanded metaplot.<br>◆ <strong>Revised Edition (1998–2004):</strong> Significant rules overhaul. Darkest metaplot (Gehenna imminent, Traditions shattered). Ended with "Time of Judgement" canonical endings for each game line.<br>◆ <strong>20th Anniversary (2011–2018):</strong> Definitive, comprehensive, non-advancing-metaplot. V20, W20, M20, C20, Wraith 20. Collects all editions into one authoritative volume. <em>Recommended entry point.</em><br>◆ <strong>5th Edition / V5 (2018+):</strong> A new, separate continuity — NOT Classic WoD. Different mechanics (Hunger dice system), some lore changes. Controversial in the community. Not the same as V20.<br><br><strong>Recommendation:</strong> Start with V20, W20, or M20 for Classic WoD. Self-contained, complete, and the most polished versions.`},
+  {id:'other-wraith',tags:['wraith','oblivion','wraith the oblivion','shadowlands','charon','stygia','ghosts','underworld','dead','shadow mechanic'],title:'Wraith: The Oblivion',answer:`<strong>Wraith: The Oblivion</strong> (1994) is widely considered WoD's darkest and most emotionally challenging game. Players portray the newly dead — souls who have not passed on because of unfinished business, powerful emotion, or stubborn will. They exist as <em>Wraiths</em> in the <em>Shadowlands</em>, a decaying reflection of the living world.<br><br><strong>The Shadow Mechanic:</strong> Every Wraith has a <em>Shadow</em> — their darker half, played secretly by another player at the table. The Shadow actively works against the character, whispering weakness and pushing toward Oblivion. This makes the table itself feel like the game's horror.<br><br><strong>Stygia:</strong> The dead world's government, ruled (until his disappearance) by the Ferryman <em>Charon</em>. His disappearance triggers the Maelstrom events of the Revised era.<br><br><strong>Wraith 20th Anniversary Edition</strong> was released 2018.`},
+  {id:'other-changeling',tags:['changeling','dreaming','kithain','fae','faerie','glamour','banality','seeming','kith'],title:'Changeling: The Dreaming',answer:`<strong>Changeling: The Dreaming</strong> (1995) is the most whimsical and tragic WoD game. Players portray <em>Kithain</em> — faerie souls reborn in human bodies, caught between magical fae nature and grounded human self.<br><br>The <strong>Dreaming</strong> is the realm of imagination, story, and faerie magic — fed by human creativity. It is dying. The modern world's materialism (<em>Banality</em>) slowly strips away magical potential. Changelings must feed on <em>Glamour</em> (inspiriting mortals, experiencing art and passion) while avoiding Banality accumulation. Too much Banality = <em>Undoing</em> — the fae soul vanishes.<br><br><strong>Kiths:</strong> Pooka (tricksters), Sidhe (nobles), Boggan (domestic fae), Redcap (terrifyingly violent), Sluagh (whispering horror), Troll (honourable warriors), and others.<br><br><strong>C20</strong> (Changeling 20th Anniversary) released 2016.`},
+  {id:'other-demon',tags:['demon','fallen','demon the fallen','lore of the fallen','angels','elohim','devils'],title:'Demon: The Fallen',answer:`<strong>Demon: The Fallen</strong> (2002) — players portray fallen angels (<em>Elohim</em>) who rebelled against God and were imprisoned in Hell for millennia, now escaped through cracks opened by the approaching Apocalypse. They inhabit human hosts (<em>Thralls</em>) to interact with the physical world.<br><br>Their angelic powers — <em>Lores</em> (of Fire, Flesh, Paths, etc.) — remain, but they are beings of tainted glory, between angels and demons.<br><br><strong>Five Factions:</strong> Luciferans (complete the Rebellion), Faustians (humanity as key to reconciliation), Raveners (embrace the monstrous), Reconcilers (seek forgiveness), Cryptics (understand the Fall before acting).<br><br>Demon: The Fallen exists at the apocalyptic edge of Classic WoD — implying the fallen angels' escape is directly connected to Gehenna and the Garou Apocalypse.`}
+];
+
+// ── SEARCH ENGINE ─────────────────────────────────────────────────────────────
+function scoreEntry(e, q) {
+  const words = q.toLowerCase().split(/\s+/).filter(w => w.length > 2);
+  let s = 0;
+  const titleL = e.title.toLowerCase();
+  const ansL = e.answer.toLowerCase().replace(/<[^>]+>/g,'');
+  words.forEach(w => {
+    e.tags.forEach(t => { if (t===w) s+=10; else if (t.includes(w)||w.includes(t)) s+=4; });
+    if (titleL.includes(w)) s+=8;
+    if (ansL.includes(w)) s+=1;
+  });
+  if (titleL.includes(q.toLowerCase())) s+=20;
+  e.tags.forEach(t => { if (q.toLowerCase().includes(t) && t.length>3) s+=12; });
+  return s;
+}
+
+function searchKB(q) {
+  if (!q || q.trim().length < 2) return [];
+  return KB.map(e => ({e, s: scoreEntry(e, q)})).filter(x => x.s>0).sort((a,b) => b.s-a.s).slice(0,5).map(x => x.e);
+}
+
+// ── CHAT ──────────────────────────────────────────────────────────────────────
+function handleKey(ev) { if (ev.key==='Enter' && !ev.shiftKey) { ev.preventDefault(); sendMsg(); } }
+function qp(t) { document.getElementById('oracleInput').value = t; sendMsg(); }
+
+function sendMsg() {
+  const inp = document.getElementById('oracleInput');
+  const msg = inp.value.trim();
+  if (!msg) return;
+  addMsg('user', esc(msg));
+  inp.value = '';
+  inp.style.height = 'auto';
+  const typing = document.getElementById('oracleTyping');
+  typing.classList.add('active');
+  scrollChat();
+  setTimeout(() => {
+    typing.classList.remove('active');
+    const results = searchKB(msg);
+    if (results.length === 0) {
+      addMsg('oracle', `The Oracle searches its depths but finds no precise match for <em>"${esc(msg)}"</em>.<br><br>Try asking about a specific topic: a clan, tribe, tradition, character, rule, or fan project. You can also browse the other sections of the Codex for detailed lore.`);
+    } else {
+      renderResult(results[0], results.slice(1, 4));
+    }
+    scrollChat();
+  }, 500);
+}
+
+function renderResult(primary, others) {
+  let html = `<strong style="color:var(--crimson);font-family:var(--font-sub)">${esc(primary.title)}</strong><br><br>${primary.answer}`;
+  if (others && others.length > 0) {
+    html += `<br><br><span style="font-family:var(--font-sub);font-size:.72rem;letter-spacing:.08em;color:var(--aged)">RELATED ENTRIES:</span><br>`;
+    others.forEach(o => {
+      html += `<button onclick="loadEntry('${o.id}')" class="related-btn">${esc(o.title)}</button>`;
+    });
+  }
+  addMsg('oracle', html);
+}
+
+function loadEntry(id) {
+  const e = KB.find(x => x.id===id);
+  if (e) renderResult(e);
+}
+
+function esc(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function addMsg(role, html) {
+  const chat = document.getElementById('oracleChat');
+  const d = document.createElement('div');
+  d.className = `chat-msg ${role}`;
+  d.innerHTML = `<div class="chat-av">${role==='oracle'?'⬡':'👤'}</div><div class="chat-bubble">${html}</div>`;
+  chat.appendChild(d);
+  scrollChat();
+}
+
+function scrollChat() {
+  const c = document.getElementById('oracleChat');
+  c.scrollTop = c.scrollHeight;
+}
+
+function clearChat() {
+  document.getElementById('oracleChat').innerHTML = `
+    <div class="chat-msg oracle">
+      <div class="chat-av">⬡</div>
+      <div class="chat-bubble"><strong>The Oracle's scroll is blank.</strong><br><br>Ask me anything about the World of Darkness.</div>
+    </div>`;
+}
+
+function exportChat() {
+  const msgs = document.querySelectorAll('#oracleChat .chat-msg');
+  if (!msgs.length) return;
+  let txt = 'ORACLE CONSULTATION — CODEX NOCTIS\n' + '='.repeat(40) + '\n\n';
+  msgs.forEach(m => {
+    const role = m.classList.contains('user') ? 'SEEKER' : 'ORACLE';
+    const content = m.querySelector('.chat-bubble').innerText;
+    txt += `[${role}]:\n${content}\n\n---\n\n`;
+  });
+  const b = new Blob([txt], {type:'text/plain'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(b);
+  a.download = 'oracle-consultation.txt';
+  a.click();
+}
+
+document.getElementById('oracleInput').addEventListener('input', function() {
+  this.style.height = 'auto';
+  this.style.height = Math.min(this.scrollHeight, 150) + 'px';
+});
+</script>
+
+</body></html>
