@@ -1,1 +1,1 @@
-Access Oracle with the link; https://whalenlachlan-blip.github.io/Oracle-WoD/
+Access Oracle with the link; https://yuggy-duggy.github.io/Oracle-WoD/
